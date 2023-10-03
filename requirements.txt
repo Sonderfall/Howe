@@ -1,0 +1,3 @@
+qiskit
+torch
+black==23.9.1
