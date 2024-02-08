@@ -1,3 +1,4 @@
+google-cloud-api-keys
 google-cloud-speech
 google-cloud-texttospeech
 fairscale
