@@ -1,3 +1,7 @@
-qiskit
+google-cloud-speech
+google-cloud-texttospeech
+fairscale
+fire
+sentencepiece
 torch
 black==23.9.1
