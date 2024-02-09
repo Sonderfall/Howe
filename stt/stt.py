@@ -1,9 +1,6 @@
 from google.cloud import speech_v2
 from google.oauth2 import service_account
 
-
-## AIzaSyDGZAZgLoynElueG1fWaBxSOpp94xt4d58
-
 def listen(callback):
     credentials = service_account.Credentials.from_service_account_file('config/gcloud.json')
     # credentials = service_account.Credentials
