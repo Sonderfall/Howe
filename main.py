@@ -1,8 +1,8 @@
-from ai import Assistant
+from bot import ClientBot
 
 
 def main():
-    assistant = Assistant()
+    assistant = ClientBot()
     assistant.live()
 
 

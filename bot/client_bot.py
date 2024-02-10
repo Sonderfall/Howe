@@ -6,7 +6,7 @@ from statemachine import StateMachine, State
 from pynput.keyboard import Key, Listener
 
 
-class Assistant(StateMachine):
+class ClientBot(StateMachine):
     idle = State(name="idle", initial=True)
     listening = State(name="listening")
     thinking = State(name="thinking")
@@ -18,7 +18,7 @@ class Assistant(StateMachine):
         | speaking.to(idle)
     )
 
-    def __init__(self) -> "Assistant":
+    def __init__(self) -> "ClientBot":
         super().__init__()
 
         self.__last_heard_utterance = None

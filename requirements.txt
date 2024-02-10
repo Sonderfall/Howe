@@ -10,4 +10,5 @@ pygame
 pvrecorder
 pynput
 python-statemachine
+boto3
 black
