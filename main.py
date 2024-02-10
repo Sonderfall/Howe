@@ -1,4 +1,4 @@
-import fire
+# import fire
 
 from ai import Assistant
 
@@ -9,4 +9,4 @@ def main():
 
 
 if __name__ == "__main__":
-    fire.Fire(main)
+    main()

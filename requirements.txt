@@ -8,6 +8,6 @@ torch
 lama-cpp-python
 pygame
 pvrecorder
-keyboard
+pynput
 python-statemachine
 black
