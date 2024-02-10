@@ -6,25 +6,25 @@ from google.oauth2 import service_account
 from pvrecorder import PvRecorder
 
 
-def listen() -> str:
+def listen(should_listen : callable) -> str:
     filepath = "input.mp3"
 
-    __record(filepath)
+    __record(filepath, should_listen)
 
     return __transcript(filepath)
 
 
-def __record(filepath: str):
+def __record(filepath: str, should_listen : callable):
     recorder = PvRecorder(device_index=-1, frame_length=512)
     audio = []
 
     try:
         recorder.start()
 
-        while True:
+        while should_listen():
             frame = recorder.read()
             audio.extend(frame)
-    except KeyboardInterrupt:
+
         recorder.stop()
 
         with wave.open(filepath, "w") as f:
@@ -67,6 +67,12 @@ def __transcript(filepath: str) -> str:
 
 
 if __name__ == "__main__":
-    utterance = listen()
+    def should_listen() -> bool:
+        try:
+            return True
+        except KeyboardInterrupt:
+            return False
+
+    utterance = listen(should_listen)
 
     print(f"Result: {utterance}")

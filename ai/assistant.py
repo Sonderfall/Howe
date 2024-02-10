@@ -20,19 +20,25 @@ class Assistant(StateMachine):
 
         self.__last_heard_utterance = None
         self.__last_thought_utterance = None
+        self.__must_listen = False
         self.__hotkey = "space"
 
     def live(self):
         def on_press():
             if self.current_state.id == "idle":
+                self.__must_listen = True
                 self.__cycle()
 
         def on_release():
             if self.current_state.id == "listening":
+                self.__must_listen = False
                 self.__cycle()
 
         keyboard.on_press_key(self.__hotkey, on_press)
         keyboard.on_release_key(self.__hotkey, on_release)
+
+        while True:
+            pass
 
     def on_enter_idle(self):
         print("I am waiting")
@@ -42,9 +48,13 @@ class Assistant(StateMachine):
 
     def on_enter_listening(self):
         print("I am listening")
+
+        def should_listen() -> bool:
+            return self.__must_listen
+
         self.__last_heard_utterance = None
-        self.__last_heard_utterance = listen()
-        self.__cycle()
+        self.__last_heard_utterance = listen(should_listen)
+        # self.__cycle()
 
     def on_exit_listening(self):
         print("I am not listening anymore")

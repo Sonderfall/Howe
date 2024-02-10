@@ -1,10 +1,11 @@
 import fire
 
-from ai import X
+from ai import Assistant
 
 
 def main():
-    pass
+    assistant = Assistant()
+    assistant.live()
 
 
 if __name__ == "__main__":
