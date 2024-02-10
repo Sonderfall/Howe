@@ -1,5 +1,3 @@
-# import fire
-
 from ai import Assistant
 
 

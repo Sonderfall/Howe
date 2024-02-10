@@ -6,7 +6,7 @@ from google.oauth2 import service_account
 from pvrecorder import PvRecorder
 
 
-def listen(should_listen : callable) -> str:
+def listen(should_listen: callable) -> str:
     filepath = "input.mp3"
 
     __record(filepath, should_listen)
@@ -14,7 +14,7 @@ def listen(should_listen : callable) -> str:
     return __transcript(filepath)
 
 
-def __record(filepath: str, should_listen : callable):
+def __record(filepath: str, should_listen: callable):
     recorder = PvRecorder(device_index=-1, frame_length=512)
     audio = []
 

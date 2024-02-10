@@ -1,18 +1,21 @@
+import threading
+
 from tts import say
 from stt import listen
 from statemachine import StateMachine, State
 from pynput.keyboard import Key, Listener
 
+
 class Assistant(StateMachine):
-    idle_state = State(name="idle", initial=True)
-    listening_state = State(name="listening")
-    thinking_state = State(name="thinking")
-    speaking_state = State(name="speaking")
+    idle = State(name="idle", initial=True)
+    listening = State(name="listening")
+    thinking = State(name="thinking")
+    speaking = State(name="speaking")
     cycle = (
-        idle_state.to(listening_state)
-        | listening_state.to(thinking_state)
-        | thinking_state.to(speaking_state)
-        | speaking_state.to(idle_state)
+        idle.to(listening)
+        | listening.to(thinking)
+        | thinking.to(speaking)
+        | speaking.to(idle)
     )
 
     def __init__(self) -> "Assistant":
@@ -25,31 +28,30 @@ class Assistant(StateMachine):
     def live(self):
         def on_press(key):
             if key != Key.space:
-                return
+                return True
 
             if self.__must_listen:
-                return
+                return True
 
             if self.current_state.id == "idle":
                 self.__must_listen = True
                 self.cycle()
 
+            return True
+
         def on_release(key):
             if key != Key.space:
-                return
+                return True
 
             if not self.__must_listen:
-                return
-        
+                return True
+
             if self.current_state.id == "listening":
                 self.__must_listen = False
-                self.cycle()
 
-        self.cycle()
+            return True
 
-        listener = Listener(
-                on_press=on_press,
-                on_release=on_release)
+        listener = Listener(on_press=on_press, on_release=on_release)
         listener.start()
 
         while True:
@@ -64,12 +66,16 @@ class Assistant(StateMachine):
     def on_enter_listening(self):
         print("I am listening")
 
-        def should_listen() -> bool:
+        def __should_listen() -> bool:
             return self.__must_listen
 
-        self.__last_heard_utterance = None
-        self.__last_heard_utterance = listen(should_listen)
-        # self.__cycle()
+        def __start_listening():
+            self.__last_heard_utterance = None
+            self.__last_heard_utterance = listen(__should_listen)
+            self.cycle()
+
+        thread = threading.Thread(target=__start_listening)
+        thread.start()
 
     def on_exit_listening(self):
         print("I am not listening anymore")
@@ -77,7 +83,7 @@ class Assistant(StateMachine):
     def on_enter_thinking(self):
         print("I am thinking about", self.__last_heard_utterance)
         self.__last_thought_utterance = None
-        self.__last_thought_utterance = "Je ne suis pas d'accord"
+        self.__last_thought_utterance = self.__last_heard_utterance
         self.cycle()
 
     def on_exit_thinking(self):
