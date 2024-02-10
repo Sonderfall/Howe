@@ -1,25 +1,30 @@
-from google.cloud import speech_v2
+from google.cloud import speech
 from google.oauth2 import service_account
 
-def listen(callback):
+def listen():
+    # Create credentials
     credentials = service_account.Credentials.from_service_account_file('config/gcloud.json')
-    # credentials = service_account.Credentials
-    client = speech_v2.SpeechClient(credentials=credentials)
 
-    # Initialize request argument(s)
-    request = speech_v2.RecognizeRequest(
-        content=b'content_blob',
-        recognizer="recognizer_value",
+    client = speech.SpeechClient(credentials=credentials)
+
+    with open('output.mp3', 'rb') as f:
+        data = f.read()
+
+    audio = speech.RecognitionAudio(content=data)
+
+    config = speech.RecognitionConfig(
+        encoding=speech.RecognitionConfig.AudioEncoding.MP3,
+        sample_rate_hertz=16000,
+        language_code="fr-FR",
     )
 
     # Synchronous speech recognition request
-    response = client.recognize(request=request)
+    response = client.recognize(config=config, audio=audio)
 
-    for _, r in enumerate(response.results):
-        for _, a in enumerate(r.alternatives):
-            print(a.words)
+    print(response)
 
-    return response
+    for result in response.results:
+        print(f"Transcript: {result.alternatives[0].transcript}")
 
 if __name__ == "__main__":
-    listen(None)
+    listen()
