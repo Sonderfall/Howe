@@ -8,12 +8,12 @@ from google.oauth2 import service_account
 def say(utterance: str):
     filepath = "output.mp3"
 
-    synthesize(utterance, filepath)
+    __synthesize(utterance, filepath)
 
-    play(filepath)
+    __play(filepath)
 
 
-def synthesize(utterance: str, output: str):
+def __synthesize(utterance: str, output: str):
     # Create credentials
     credentials = service_account.Credentials.from_service_account_file(
         "config/gcloud.json"
@@ -48,7 +48,7 @@ def synthesize(utterance: str, output: str):
         out.write(response.audio_content)
 
 
-def play(filepath: str):
+def __play(filepath: str):
     mixer.init()
     mixer.music.load(filepath)
     mixer.music.play()

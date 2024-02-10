@@ -9,15 +9,12 @@ from pvrecorder import PvRecorder
 def listen() -> str:
     filepath = "input.mp3"
 
-    record(filepath)
+    __record(filepath)
 
-    return transcript(filepath)
+    return __transcript(filepath)
 
 
-def record(filepath: str):
-    for index, device in enumerate(PvRecorder.get_available_devices()):
-        print(f"[{index}] {device}")
-
+def __record(filepath: str):
     recorder = PvRecorder(device_index=-1, frame_length=512)
     audio = []
 
@@ -38,7 +35,7 @@ def record(filepath: str):
         recorder.delete()
 
 
-def transcript(filepath: str) -> str:
+def __transcript(filepath: str) -> str:
     # Create credentials
     credentials = service_account.Credentials.from_service_account_file(
         "config/gcloud.json"
@@ -59,8 +56,6 @@ def transcript(filepath: str) -> str:
 
     # Synchronous speech recognition request
     response = client.recognize(config=config, audio=audio)
-
-    print(response)
 
     for result in response.results:
         utterance = result.alternatives[0].transcript
