@@ -4,12 +4,16 @@ Make sure to be working in a virtual environment.
 Note: ssml must be well-formed according to:
     https://www.w3.org/TR/speech-synthesis/
 """
+import time
+
+from pygame import mixer
 from google.cloud import texttospeech
 from google.oauth2 import service_account
 
-
 def say(utterance: str):
+    # Create credentials
     credentials = service_account.Credentials.from_service_account_file('config/gcloud.json')
+
     # Instantiates a client
     client = texttospeech.TextToSpeechClient(credentials=credentials)
 
@@ -33,11 +37,22 @@ def say(utterance: str):
         input=synthesis_input, voice=voice, audio_config=audio_config
     )
 
+    filepath = "output.mp3"
+    
     # The response's audio_content is binary.
-    with open("output.mp3", "wb") as out:
+    with open(filepath, "wb") as out:
         # Write the response to the output file.
         out.write(response.audio_content)
-        print('Audio content written to file "output.mp3"')
+
+    play(filepath)
+
+def play(filepath : str):
+    mixer.init()
+    mixer.music.load(filepath)
+    mixer.music.play()
+    
+    while mixer.music.get_busy():  # wait for music to finish playing
+        time.sleep(0.5)
 
 if __name__ == "__main__":
-    say("Bonjour, je m'appelle Valentin")
+    say("Bonjour, je m'appelle trololololo")

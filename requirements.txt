@@ -7,3 +7,4 @@ sentencepiece
 torch
 black==23.9.1
 lama-cpp-python
+pygame
