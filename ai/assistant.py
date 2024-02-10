@@ -26,7 +26,7 @@ class Assistant(StateMachine):
         self.__must_listen = False
 
     def live(self):
-        def on_press(key):
+        def __on_press(key):
             if key != Key.space:
                 return True
 
@@ -39,7 +39,7 @@ class Assistant(StateMachine):
 
             return True
 
-        def on_release(key):
+        def __on_release(key):
             if key != Key.space:
                 return True
 
@@ -51,7 +51,7 @@ class Assistant(StateMachine):
 
             return True
 
-        listener = Listener(on_press=on_press, on_release=on_release)
+        listener = Listener(on_press=__on_press, on_release=__on_release)
         listener.start()
 
         while True:
