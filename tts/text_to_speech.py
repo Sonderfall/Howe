@@ -6,6 +6,9 @@ from google.oauth2 import service_account
 
 
 def say(utterance: str):
+    if utterance is None:
+        return
+
     filepath = "output.mp3"
 
     __synthesize(utterance, filepath)
