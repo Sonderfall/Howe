@@ -1,6 +1,5 @@
 from sqs import ThinkRequest, ThinkResponse
 
-from typing import Dict, List, Optional
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
@@ -30,12 +29,16 @@ def think(request: ThinkRequest) -> ThinkResponse:
         query=request.utterance,
         temperature=request.temperature,
         max_new_tokens=request.max_len,
+        top_k=3,
+        top_p=2,
     )
 
     print(response)
 
     response = ThinkResponse(
-        utterance=response, total_response_count=1, response_index=0
+        utterance=response,
+        total_response_count=1,
+        response_index=0
     )
 
     return response
