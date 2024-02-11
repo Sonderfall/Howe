@@ -12,7 +12,6 @@ class ServerBot(StateMachine):
     def __init__(self) -> "ServerBot":
         super().__init__()
         self.__last_heard_utterance = None
-        self.__last_thought_utterance = None
 
     def live(self):
         while True:
@@ -20,7 +19,6 @@ class ServerBot(StateMachine):
 
     def on_enter_idle(self):
         print("I am waiting")
-        self.__last_heard_utterance = None
         self.__last_heard_utterance = wait_request()
         self.cycle()
 
@@ -29,10 +27,10 @@ class ServerBot(StateMachine):
 
     def on_enter_thinking(self):
         print("I am thinking")
-        self.__last_thought_utterance = think_server(self.__last_heard_utterance)
-        respond(ThinkResponse(self.__last_thought_utterance))
+        response = think_server(self.__last_heard_utterance)
+        respond(response)
         self.cycle()
 
     def on_exit_thinking(self):
         print("I am not thinking anymore")
-        self.__last_thought_utterance = None
+        self.__last_heard_utterance = None
