@@ -1,10 +1,12 @@
 from sqs import ThinkRequest, ThinkResponse
+from threading import Thread
 
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
     GenerationConfig,
     TextStreamer,
+    TextIteratorStreamer,
 )
 
 # __MODEL_NAME = "bofenghuang/vigogne-2-7b-chat"
@@ -18,19 +20,24 @@ __model = AutoModelForCausalLM.from_pretrained(
 __tokenizer = AutoTokenizer.from_pretrained(
     __MODEL_NAME, revision=__REVISION, use_fast=True
 )
-__streamer = TextStreamer(
+__streamer = TextIteratorStreamer(
     __tokenizer, timeout=10.0, skip_prompt=True, skip_special_tokens=True
 )
 __history = []
 
 
 def think(request: ThinkRequest) -> ThinkResponse:
+    def __on_new_word(k):
+        print(k)
+
     response = __chat(
         query=request.utterance,
         temperature=request.temperature,
         max_new_tokens=request.max_len,
-        top_k=3,
-        top_p=2,
+        on_new_word=__on_new_word,
+        top_k=25,
+        top_p=1,
+        use_cache=True,
     )
 
     print(response)
@@ -47,6 +54,7 @@ def think(request: ThinkRequest) -> ThinkResponse:
 def __chat(
     query: str,
     temperature: float = 0.7,
+    on_new_word: callable = None,
     top_p: float = 1.0,
     top_k: float = 0,
     repetition_penalty: float = 1.1,
@@ -62,26 +70,38 @@ def __chat(
     input_ids = __tokenizer.apply_chat_template(
         conversation=__history, add_generation_prompt=True, return_tensors="pt"
     ).to(__model.device)
-    input_length = input_ids.shape[1]
 
-    generated_outputs = __model.generate(
-        input_ids=input_ids,
-        generation_config=GenerationConfig(
-            temperature=temperature,
-            do_sample=temperature > 0.0,
-            top_p=top_p,
-            top_k=top_k,
-            repetition_penalty=repetition_penalty,
-            max_new_tokens=max_new_tokens,
-            pad_token_id=__tokenizer.eos_token_id,
-            **kwargs,
-        ),
-        streamer=__streamer,
-        return_dict_in_generate=True,
-    )
+    def __generate():
+        # input_length = input_ids.shape[1]
+        generated_outputs = __model.generate(
+            input_ids=input_ids,
+            generation_config=GenerationConfig(
+                temperature=temperature,
+                do_sample=temperature > 0.0,
+                top_p=top_p,
+                top_k=top_k,
+                repetition_penalty=repetition_penalty,
+                max_new_tokens=max_new_tokens,
+                pad_token_id=__tokenizer.eos_token_id,
+                **kwargs,
+            ),
+            streamer=__streamer,
+            return_dict_in_generate=True,
+        )
 
-    generated_tokens = generated_outputs.sequences[0, input_length:]
-    generated_text = __tokenizer.decode(generated_tokens, skip_special_tokens=True)
+        # generated_tokens = generated_outputs.sequences[0, input_length:]
+        # generated_text = __tokenizer.decode(generated_tokens, skip_special_tokens=True)
+
+    thread = Thread(target=__generate)
+    thread.start()
+
+    generated_text = ""
+
+    for new_text in __streamer:
+        if on_new_word is not None:
+            on_new_word(new_text)
+
+        generated_text += new_text
 
     __history.append({"role": "assistant", "content": generated_text})
 
