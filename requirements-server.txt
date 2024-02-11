@@ -1,0 +1,10 @@
+fire
+torch
+pvrecorder
+python-statemachine
+boto3
+dataclasses-json
+transformers
+huggingface-hub
+optimum
+black
