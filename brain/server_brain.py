@@ -1,6 +1,8 @@
-# from sqs import Sqs
-
-def think(utterance : str) -> str:
+def think(utterance: str) -> str:
     # call llama
 
+    pass
+
+
+if __name__ == "__main__":
     pass

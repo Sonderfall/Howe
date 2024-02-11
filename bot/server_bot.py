@@ -2,14 +2,12 @@ from statemachine import StateMachine, State
 from sqs import Sqs
 from brain import think_server
 
+
 class ServerBot(StateMachine):
     idle = State(name="idle", initial=True)
     thinking = State(name="thinking")
 
-    cycle = (
-        idle.to(thinking)
-        | thinking.to(idle)
-    )
+    cycle = idle.to(thinking) | thinking.to(idle)
 
     def __init__(self) -> "ServerBot":
         super().__init__()
@@ -18,7 +16,8 @@ class ServerBot(StateMachine):
         self.__last_thought_utterance = None
 
     def live(self):
-        pass
+        while True:
+            pass
 
     def on_enter_idle(self):
         print("I am waiting")

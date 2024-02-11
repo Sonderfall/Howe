@@ -67,6 +67,7 @@ def __transcript(filepath: str) -> str:
 
 
 if __name__ == "__main__":
+
     def should_listen() -> bool:
         try:
             return True

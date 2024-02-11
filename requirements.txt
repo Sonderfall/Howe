@@ -11,4 +11,5 @@ pvrecorder
 pynput
 python-statemachine
 boto3
+dataclasses-json
 black

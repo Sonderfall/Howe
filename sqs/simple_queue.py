@@ -1,27 +1,98 @@
 import boto3
 
-class Sqs():
-    def __init__(self, queue_name : str) -> "Sqs":
-        sqs = boto3.resource("sqs")
+from dataclasses import dataclass
+from dataclasses_json import dataclass_json
+from typing import Union, List
 
-        self.__queue = sqs.create_queue(QueueName=queue_name, Attributes={
-            "MaximumMessageSize": str(4096),
-            "ReceiveMessageWaitTimeSeconds": str(10),
-            "VisibilityTimeout": str(300),
-            "FifoQueue": str(True),
-            })
 
-    def send_message(self, message):
-        response = self.__queue.send_message(
-            MessageBody=message, MessageAttributes=None
+@dataclass_json
+@dataclass
+class SqsConfig:
+    url: str
+    access_key: str
+    secret_key: str
+
+
+@dataclass_json
+@dataclass
+class ThinkRequest:
+    type: int = 1
+    utterance: str
+    temperature: float
+    max_len: int
+
+
+@dataclass_json
+@dataclass
+class ThinkResponse:
+    type: int = 2
+    utterance: str
+    total_response_count: int
+    response_index: int
+
+
+class Sqs:
+    def __init__(self, config_filepath: str) -> "Sqs":
+        self.__queues = {}
+
+        with open(config_filepath, "rb") as f:
+            config = SqsConfig.from_json(f.read())
+
+            session = boto3.Session(
+                aws_access_key_id=config.access_key,
+                aws_secret_access_key=config.secret_key,
+            )
+
+            self.__sqs_client = session.resource("sqs")
+
+    def create_queue(self, queue_name: str):
+        if not queue_name.endswith(".fifo"):
+            real_queue_name = queue_name + ".fifo"
+
+        queue = self.__sqs_client.create_queue(
+            QueueName=real_queue_name,
+            Attributes={
+                "MaximumMessageSize": str(4096),
+                "ReceiveMessageWaitTimeSeconds": str(10),
+                "VisibilityTimeout": str(300),
+                "FifoQueue": str(True),
+            },
         )
 
-    def receive_messages(self) -> str:
-        messages = self.__queue.receive_messages(
+        self.__queues[queue_name] = queue
+
+    def send_message(
+        self, queue_name: str, message: Union[ThinkResponse, ThinkRequest]
+    ):
+        if not queue_name in self.__queues:
+            return
+
+        queue = self.__queues[queue_name]
+
+        response = queue.send_message(
+            MessageBody=message.to_json(), MessageAttributes=None
+        )
+
+    def receive_messages(
+        self, queue_name: str, type: Union[ThinkResponse, ThinkRequest]
+    ) -> List[Union[ThinkResponse, ThinkRequest]]:
+        if not queue_name in self.__queues:
+            return
+
+        queue = self.__queues[queue_name]
+
+        messages = queue.receive_messages(
             MessageAttributeNames=["All"],
-            MaxNumberOfMessages=10,
+            MaxNumberOfMessages=20,
             WaitTimeSeconds=10,
         )
 
+        array = []
+
         for msg in messages:
-            return msg
+            if type == ThinkResponse:
+                array.append(ThinkResponse.from_json(msg))
+            elif type == ThinkRequest:
+                array.append(ThinkRequest.from_json(msg))
+
+        return array
