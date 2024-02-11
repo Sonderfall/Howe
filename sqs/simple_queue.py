@@ -16,7 +16,6 @@ class SqsConfig:
 @dataclass_json
 @dataclass
 class ThinkRequest:
-    type: int = 1
     utterance: str
     temperature: float
     max_len: int
@@ -25,7 +24,6 @@ class ThinkRequest:
 @dataclass_json
 @dataclass
 class ThinkResponse:
-    type: int = 2
     utterance: str
     total_response_count: int
     response_index: int

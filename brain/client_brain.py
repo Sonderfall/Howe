@@ -2,7 +2,6 @@ from sqs import request, wait_response, ThinkRequest
 
 
 def think(utterance: str) -> str:
-    # Send Sqs message with utterance
     request(
         ThinkRequest(
             utterance=utterance,
@@ -11,7 +10,6 @@ def think(utterance: str) -> str:
         )
     )
 
-    # Aggregate multiple responses
     response = wait_response()
 
     return response.utterance

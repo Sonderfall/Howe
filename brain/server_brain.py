@@ -1,7 +1,7 @@
 def think(utterance: str) -> str:
     # call llama
 
-    pass
+    return "Je suis d'accord"
 
 
 if __name__ == "__main__":

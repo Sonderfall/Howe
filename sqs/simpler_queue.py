@@ -33,12 +33,16 @@ def wait_response() -> ThinkResponse:
     while True:
         responses = __sqs_handler.receive_messages(__RESPONSE_QUEUE, 5, ThinkResponse)
 
-        whole_utterance = ""
-
         if len(responses) > 0:
+            whole_utterance = ""
+
             for r in responses:
                 whole_utterance += r.utterance + " "
 
-            return ThinkResponse(utterance=whole_utterance)
+            return ThinkResponse(
+                utterance=whole_utterance,
+                response_index=0,
+                total_response_count=len(responses),
+            )
         else:
             time.sleep(1)
