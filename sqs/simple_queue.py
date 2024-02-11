@@ -81,18 +81,22 @@ class Sqs:
 
     def send_message(
         self, queue_name: str, message: Union[ThinkResponse, ThinkRequest]
-    ):
+    ) -> str:
         if not queue_name in self.__queues:
             return
 
         queue = self.__queues[queue_name]
 
         msg = message.to_json()
-        print("POULET", msg, type(msg))
 
         response = self.__sqs_client.send_message(
-            QueueUrl=queue.url, MessageBody=msg, MessageAttributes={}, MessageDeduplicationId="true",
+            QueueUrl=queue.url,
+            MessageBody=msg,
+            MessageAttributes={},
+            MessageDeduplicationId="true",
         )
+
+        return response.get("MessageId", None)
 
     def receive_messages(
         self, queue_name: str, max_msg: int, type: Union[ThinkResponse, ThinkRequest]
@@ -102,12 +106,16 @@ class Sqs:
 
         queue = self.__queues[queue_name]
 
-        messages = self.__sqs_client.receive_message(
+        response = self.__sqs_client.receive_message(
             QueueUrl=queue.url,
             MessageAttributeNames=["All"],
             MaxNumberOfMessages=max_msg,
             WaitTimeSeconds=10,
         )
+
+        messages = response.get("Messages", [])
+
+        print(messages)
 
         array = []
 

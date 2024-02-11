@@ -11,12 +11,12 @@ __sqs_handler.create_queue(__REQUEST_QUEUE)
 __sqs_handler.create_queue(__RESPONSE_QUEUE)
 
 
-def request(req: ThinkRequest):
-    __sqs_handler.send_message(__REQUEST_QUEUE, req)
+def request(req: ThinkRequest) -> str:
+    return __sqs_handler.send_message(__REQUEST_QUEUE, req)
 
 
-def respond(resp: ThinkResponse):
-    __sqs_handler.send_message(__RESPONSE_QUEUE, resp)
+def respond(resp: ThinkResponse) -> str:
+    return __sqs_handler.send_message(__RESPONSE_QUEUE, resp)
 
 
 def wait_request() -> ThinkRequest:
@@ -49,7 +49,7 @@ def wait_response() -> ThinkResponse:
 
 
 if __name__ == "__main__":
-    request(ThinkRequest(utterance="helloooo", temperature=0.5, max_len=512))
+    print(request(ThinkRequest(utterance="helloooo", temperature=0.5, max_len=512)))
 
     req = wait_request()
 
