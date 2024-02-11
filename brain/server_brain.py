@@ -12,7 +12,8 @@ from transformers import (
 # __MODEL_NAME = "bofenghuang/vigogne-2-7b-chat"
 # __REVISION = "v2.0"
 __MODEL_NAME = "TheBloke/Vigostral-7B-Chat-GPTQ"
-__REVISION = "gptq-4bit-32g-actorder_True"
+# __REVISION = "gptq-4bit-32g-actorder_True"
+__REVISION = "main"
 
 __model = AutoModelForCausalLM.from_pretrained(
     __MODEL_NAME, revision=__REVISION, device_map="cuda:0"
@@ -43,9 +44,7 @@ def think(request: ThinkRequest) -> ThinkResponse:
     print(response)
 
     response = ThinkResponse(
-        utterance=response,
-        total_response_count=1,
-        response_index=0
+        utterance=response, total_response_count=1, response_index=0
     )
 
     return response
@@ -112,7 +111,7 @@ if __name__ == "__main__":
     print(
         think(
             ThinkRequest(
-                utterance="Comment vas tu ?",
+                utterance="Quel est le sens de la vie ?",
                 temperature=1,
                 max_len=512,
             )
