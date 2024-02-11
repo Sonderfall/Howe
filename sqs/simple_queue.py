@@ -102,7 +102,7 @@ class Sqs:
 
         queue = self.__queues[queue_name]
 
-        messages = self.__sqs_client.receive_messages(
+        messages = self.__sqs_client.receive_message(
             QueueUrl=queue.url,
             MessageAttributeNames=["All"],
             MaxNumberOfMessages=max_msg,
