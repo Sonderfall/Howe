@@ -1,6 +1,6 @@
 from statemachine import StateMachine, State
 from sqs import respond, wait_request
-from brain import think_server
+from brain.server_brain import think
 
 
 class ServerBot(StateMachine):
@@ -27,7 +27,7 @@ class ServerBot(StateMachine):
 
     def on_enter_thinking(self):
         print("I am thinking")
-        response = think_server(self.__last_heard_utterance)
+        response = think(self.__last_heard_utterance)
         respond(response)
         self.cycle()
 

@@ -2,7 +2,7 @@ import threading
 
 from tts import say
 from stt import listen
-from brain import think_client
+from brain.client_brain import think
 from statemachine import StateMachine, State
 from pynput.keyboard import Key, Listener
 
@@ -83,8 +83,7 @@ class ClientBot(StateMachine):
 
     def on_enter_thinking(self):
         print("I am thinking about", self.__last_heard_utterance)
-        self.__last_thought_utterance = None
-        self.__last_thought_utterance = think_client(self.__last_heard_utterance)
+        self.__last_thought_utterance = think(self.__last_heard_utterance)
         # self.__last_thought_utterance = self.__last_heard_utterance
         self.cycle()
 

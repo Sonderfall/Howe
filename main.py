@@ -1,22 +1,29 @@
-from bot import ClientBot, ServerBot
 from fire import Fire
 
 
-def main(mode: str = "client"):
-    bot = None
+def __start_client():
+    from bot.client_bot import ClientBot
 
-    if mode == "client":
-        bot = ClientBot()
-    elif mode == "server":
-        bot = ServerBot()
-
-    if bot == None:
-        print("Unknown mode:", mode)
-        return
-    else:
-        print("Starting in", mode, "mode")
+    bot = ClientBot()
 
     bot.live()
+
+
+def __start_server():
+    from bot.server_bot import ServerBot
+
+    bot = ServerBot()
+
+    bot.live()
+
+
+def main(mode: str = "client"):
+    print("Starting in", mode, "mode")
+
+    if mode == "client":
+        __start_client()
+    elif mode == "server":
+        __start_server()
 
 
 if __name__ == "__main__":
