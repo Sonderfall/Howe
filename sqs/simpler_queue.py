@@ -54,7 +54,13 @@ if __name__ == "__main__":
     req = wait_request()
     print(req)
 
-    print(respond(ThinkResponse(utterance="woooorld", total_response_count=1, response_index=0)))
+    print(
+        respond(
+            ThinkResponse(
+                utterance="woooorld", total_response_count=1, response_index=0
+            )
+        )
+    )
 
     resp = wait_response()
     print(resp)
