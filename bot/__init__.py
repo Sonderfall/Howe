@@ -1,2 +1,2 @@
-from Howe.bot.client_bot import ClientBot
-from Howe.bot.server_bot import ServerBot
+from bot.client_bot import ClientBot
+from bot.server_bot import ServerBot

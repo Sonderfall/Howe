@@ -28,9 +28,11 @@ def think(request: ThinkRequest) -> ThinkResponse:
         print(
             f"> {result['generation']['role'].capitalize()}: {result['generation']['content']}"
         )
-        print("\n==================================\n")
 
-    utterance = results[0]["generation"]["content"]
+    if len(results) > 0:
+        utterance = results[0]["generation"]["content"]
+    else:
+        utterance = ""
 
     response = ThinkResponse(
         utterance=utterance, total_response_count=1, response_index=0
@@ -43,7 +45,7 @@ if __name__ == "__main__":
     print(
         think(
             ThinkRequest(
-                utterance="Que pense tu des poneys unijambistes ?",
+                utterance="Que penses tu des poneys unijambistes ?",
                 temperature=0.6,
                 max_len=512,
             )

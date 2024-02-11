@@ -1,5 +1,5 @@
 from statemachine import StateMachine, State
-from sqs import respond, wait_request, ThinkResponse
+from sqs import respond, wait_request
 from brain import think_server
 
 

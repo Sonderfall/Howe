@@ -1,6 +1,6 @@
 import time
 
-from simple_queue import Sqs, ThinkRequest, ThinkResponse
+from .simple_queue import Sqs, ThinkRequest, ThinkResponse
 
 
 __REQUEST_QUEUE = "think_request_queue.fifo"

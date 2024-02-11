@@ -13,6 +13,8 @@ def main(mode: str = "client"):
     if bot == None:
         print("Unknown mode:", mode)
         return
+    else:
+        print("Starting in", mode, "mode")
 
     bot.live()
 
