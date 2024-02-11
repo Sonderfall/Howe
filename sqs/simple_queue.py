@@ -31,6 +31,12 @@ class ThinkResponse:
     response_index: int
 
 
+@dataclass
+class __Queue:
+    url: str
+    name: str
+
+
 class Sqs:
     def __init__(self, config_filepath: str) -> "Sqs":
         self.__queues = {}
@@ -59,7 +65,7 @@ class Sqs:
             },
         )
 
-        self.__queues[queue_name] = queue
+        self.__queues[queue_name] = __Queue(url=queue["QueueUrl"], name=queue_name)
 
     def send_message(
         self, queue_name: str, message: Union[ThinkResponse, ThinkRequest]
@@ -69,30 +75,36 @@ class Sqs:
 
         queue = self.__queues[queue_name]
 
-        response = queue.send_message(
-            MessageBody=message.to_json(), MessageAttributes=None
+        response = self.__sqs_client.send_message(
+            QueueUrl=queue.url, MessageBody=message.to_json(), MessageAttributes=None
         )
 
     def receive_messages(
-        self, queue_name: str, type: Union[ThinkResponse, ThinkRequest]
+        self, queue_name: str, max_msg: int, type: Union[ThinkResponse, ThinkRequest]
     ) -> List[Union[ThinkResponse, ThinkRequest]]:
         if not queue_name in self.__queues:
             return
 
         queue = self.__queues[queue_name]
 
-        messages = queue.receive_messages(
+        messages = self.__sqs_client.receive_messages(
+            QueueUrl=queue.url,
             MessageAttributeNames=["All"],
-            MaxNumberOfMessages=20,
+            MaxNumberOfMessages=max_msg,
             WaitTimeSeconds=10,
         )
 
         array = []
 
         for msg in messages:
+            body = msg["Body"]
+            handler = msg["ReceiptHandle"]
+
             if type == ThinkResponse:
-                array.append(ThinkResponse.from_json(msg))
+                array.append(ThinkResponse.from_json(body))
             elif type == ThinkRequest:
-                array.append(ThinkRequest.from_json(msg))
+                array.append(ThinkRequest.from_json(body))
+
+            self.__sqs_client.delete_message(QueueUrl=queue.url, ReceiptHandle=handler)
 
         return array
