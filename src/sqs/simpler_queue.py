@@ -51,8 +51,7 @@ def wait_response() -> ThinkResponse:
 if __name__ == "__main__":
     print(request(ThinkRequest(utterance="helloooo", temperature=0.5, max_len=512)))
 
-    req = wait_request()
-    print(req)
+    print(wait_request())
 
     print(
         respond(
@@ -62,5 +61,4 @@ if __name__ == "__main__":
         )
     )
 
-    resp = wait_response()
-    print(resp)
+    print(wait_response())

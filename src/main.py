@@ -24,6 +24,8 @@ def main(mode: str = "client"):
         __start_client()
     elif mode == "server":
         __start_server()
+    else:
+        print("Unknown mode:", mode)
 
 
 if __name__ == "__main__":

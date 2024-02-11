@@ -1,10 +1,14 @@
 .PHONY: client
 client:
-	python3 main.py --mode=client
+	python3 src/main.py --mode=client
 
 .PHONY: server
 server:
-	python3 main.py --mode=server
+	python3 src/main.py --mode=server
+
+.PHONY: build-server
+build-server:
+	docker build -f docker/server.Dockerfile --tag sonderfal/howe:lastest .
 
 .PHONY: install-client
 install-client:

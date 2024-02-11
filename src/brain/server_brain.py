@@ -5,7 +5,6 @@ from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
     GenerationConfig,
-    TextStreamer,
     TextIteratorStreamer,
 )
 
