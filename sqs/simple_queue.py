@@ -1,5 +1,6 @@
 import boto3
 import os
+import uuid
 
 from dataclasses import dataclass
 from dataclasses_json import dataclass_json
@@ -83,7 +84,7 @@ class Sqs:
         self, queue_name: str, message: Union[ThinkResponse, ThinkRequest]
     ) -> str:
         if not queue_name in self.__queues:
-            return
+            return None
 
         queue = self.__queues[queue_name]
 
@@ -93,7 +94,7 @@ class Sqs:
             QueueUrl=queue.url,
             MessageBody=msg,
             MessageAttributes={},
-            MessageDeduplicationId="true",
+            MessageDeduplicationId=str(uuid.uuid4()),
         )
 
         return response.get("MessageId", None)

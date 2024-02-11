@@ -52,5 +52,9 @@ if __name__ == "__main__":
     print(request(ThinkRequest(utterance="helloooo", temperature=0.5, max_len=512)))
 
     req = wait_request()
-
     print(req)
+
+    print(respond(ThinkResponse(utterance="woooorld", total_response_count=1, response_index=0)))
+
+    resp = wait_response()
+    print(resp)
