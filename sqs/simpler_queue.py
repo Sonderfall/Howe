@@ -1,6 +1,6 @@
 import time
 
-from sqs.simple_queue import Sqs, ThinkRequest, ThinkResponse
+from simple_queue import Sqs, ThinkRequest, ThinkResponse
 
 
 __REQUEST_QUEUE = "think_request_queue.fifo"
@@ -46,3 +46,11 @@ def wait_response() -> ThinkResponse:
             )
         else:
             time.sleep(1)
+
+
+if __name__ == "__main__":
+    request(ThinkRequest(utterance="helloooo", temperature=0.5, max_len=512))
+
+    req = wait_request()
+
+    print(req)

@@ -1,4 +1,5 @@
 import boto3
+import os
 
 from dataclasses import dataclass
 from dataclasses_json import dataclass_json
@@ -11,6 +12,7 @@ class SqsConfig:
     url: str
     access_key: str
     secret_key: str
+    region: str
 
 
 @dataclass_json
@@ -30,7 +32,7 @@ class ThinkResponse:
 
 
 @dataclass
-class __Queue:
+class _Queue:
     url: str
     name: str
 
@@ -39,31 +41,43 @@ class Sqs:
     def __init__(self, config_filepath: str) -> "Sqs":
         self.__queues = {}
 
+        if not os.path.exists(config_filepath):
+            print("Cannot find sqs config", config_filepath)
+            return
+
         with open(config_filepath, "rb") as f:
             config = SqsConfig.from_json(f.read())
 
-            session = boto3.Session(
+            session = boto3.session.Session()
+
+            self.__sqs_client = session.client(
+                service_name="sqs",
+                region_name=config.region,
+                endpoint_url=config.url,
                 aws_access_key_id=config.access_key,
                 aws_secret_access_key=config.secret_key,
             )
 
-            self.__sqs_client = session.resource("sqs")
-
     def create_queue(self, queue_name: str):
+        real_queue_name = queue_name
+
         if not queue_name.endswith(".fifo"):
             real_queue_name = queue_name + ".fifo"
 
-        queue = self.__sqs_client.create_queue(
-            QueueName=real_queue_name,
-            Attributes={
-                "MaximumMessageSize": str(4096),
-                "ReceiveMessageWaitTimeSeconds": str(10),
-                "VisibilityTimeout": str(300),
-                "FifoQueue": str(True),
-            },
-        )
-
-        self.__queues[queue_name] = __Queue(url=queue["QueueUrl"], name=queue_name)
+        try:
+            queue = self.__sqs_client.create_queue(
+                QueueName=real_queue_name,
+                Attributes={
+                    "MaximumMessageSize": str(4096),
+                    "ReceiveMessageWaitTimeSeconds": "0",
+                    "VisibilityTimeout": str(300),
+                    "FifoQueue": "true",
+                },
+            )
+        except:
+            queue = self.__sqs_client.get_queue_url(QueueName=real_queue_name)
+        finally:
+            self.__queues[queue_name] = _Queue(url=queue["QueueUrl"], name=queue_name)
 
     def send_message(
         self, queue_name: str, message: Union[ThinkResponse, ThinkRequest]
@@ -73,8 +87,11 @@ class Sqs:
 
         queue = self.__queues[queue_name]
 
+        msg = message.to_json()
+        print("POULET", msg, type(msg))
+
         response = self.__sqs_client.send_message(
-            QueueUrl=queue.url, MessageBody=message.to_json(), MessageAttributes=None
+            QueueUrl=queue.url, MessageBody=msg, MessageAttributes={}, MessageDeduplicationId="true",
         )
 
     def receive_messages(
