@@ -5,11 +5,13 @@ fairscale
 fire
 sentencepiece
 torch
-lama-cpp-python
 pygame
 pvrecorder
 pynput
 python-statemachine
 boto3
 dataclasses-json
+transformers
+huggingface-hub
+optimum
 black

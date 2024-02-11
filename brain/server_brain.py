@@ -1,52 +1,96 @@
-from llama import Llama
 from sqs import ThinkRequest, ThinkResponse
 
-
-__generator = Llama.build(
-    ckpt_dir="../llama/llama-2-7b-chat",
-    tokenizer_path="../llama/tokenizer.model",
-    max_seq_len=1024,
-    max_batch_size=1,
+from typing import Dict, List, Optional
+from transformers import (
+    AutoModelForCausalLM,
+    AutoTokenizer,
+    GenerationConfig,
+    TextStreamer,
 )
+
+# __MODEL_NAME = "bofenghuang/vigogne-2-7b-chat"
+# __REVISION = "v2.0"
+__MODEL_NAME = "TheBloke/Vigostral-7B-Chat-GPTQ"
+__REVISION = "gptq-4bit-32g-actorder_True"
+
+__model = AutoModelForCausalLM.from_pretrained(
+    __MODEL_NAME, revision=__REVISION, device_map="cuda:0"
+)
+__tokenizer = AutoTokenizer.from_pretrained(
+    __MODEL_NAME, revision=__REVISION, use_fast=True
+)
+__streamer = TextStreamer(
+    __tokenizer, timeout=10.0, skip_prompt=True, skip_special_tokens=True
+)
+__history = []
 
 
 def think(request: ThinkRequest) -> ThinkResponse:
-    dialogs = [
-        [{"role": "user", "content": request.utterance}],
-    ]
-
-    results = __generator.chat_completion(
-        dialogs,
-        max_gen_len=request.max_len,
+    response = __chat(
+        query=request.utterance,
         temperature=request.temperature,
-        top_p=0.9,
+        max_new_tokens=request.max_len,
     )
 
-    for dialog, result in zip(dialogs, results):
-        for msg in dialog:
-            print(f"{msg['role'].capitalize()}: {msg['content']}\n")
-        print(
-            f"> {result['generation']['role'].capitalize()}: {result['generation']['content']}"
-        )
-
-    if len(results) > 0:
-        utterance = results[0]["generation"]["content"]
-    else:
-        utterance = ""
+    print(response)
 
     response = ThinkResponse(
-        utterance=utterance, total_response_count=1, response_index=0
+        utterance=response, total_response_count=1, response_index=0
     )
 
     return response
+
+
+def __chat(
+    query: str,
+    temperature: float = 0.7,
+    top_p: float = 1.0,
+    top_k: float = 0,
+    repetition_penalty: float = 1.1,
+    max_new_tokens: int = 256,
+    **kwargs,
+):
+    global __history
+    if __history is None:
+        __history = []
+
+    __history.append({"role": "user", "content": query})
+
+    input_ids = __tokenizer.apply_chat_template(
+        conversation=__history, add_generation_prompt=True, return_tensors="pt"
+    ).to(__model.device)
+    input_length = input_ids.shape[1]
+
+    generated_outputs = __model.generate(
+        input_ids=input_ids,
+        generation_config=GenerationConfig(
+            temperature=temperature,
+            do_sample=temperature > 0.0,
+            top_p=top_p,
+            top_k=top_k,
+            repetition_penalty=repetition_penalty,
+            max_new_tokens=max_new_tokens,
+            pad_token_id=__tokenizer.eos_token_id,
+            **kwargs,
+        ),
+        streamer=__streamer,
+        return_dict_in_generate=True,
+    )
+
+    generated_tokens = generated_outputs.sequences[0, input_length:]
+    generated_text = __tokenizer.decode(generated_tokens, skip_special_tokens=True)
+
+    __history.append({"role": "assistant", "content": generated_text})
+
+    return generated_text
 
 
 if __name__ == "__main__":
     print(
         think(
             ThinkRequest(
-                utterance="Que penses tu des poneys unijambistes ?",
-                temperature=0.6,
+                utterance="Comment vas tu ?",
+                temperature=1,
                 max_len=512,
             )
         )

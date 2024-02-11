@@ -71,7 +71,6 @@ class ClientBot(StateMachine):
             return self.__must_listen
 
         def __start_listening():
-            self.__last_heard_utterance = None
             self.__last_heard_utterance = listen(__should_listen)
             self.cycle()
 
@@ -89,6 +88,7 @@ class ClientBot(StateMachine):
 
     def on_exit_thinking(self):
         print("I am not thinking anymore")
+        self.__last_heard_utterance = None
 
     def on_enter_speaking(self):
         print("I am speaking")
