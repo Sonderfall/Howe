@@ -115,9 +115,6 @@ class Sqs:
         )
 
         messages = response.get("Messages", [])
-
-        print(messages)
-
         array = []
 
         for msg in messages:

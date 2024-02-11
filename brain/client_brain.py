@@ -16,4 +16,4 @@ def think(utterance: str) -> str:
 
 
 if __name__ == "__main__":
-    pass
+    print(think("Que pense tu des poneys unijambistes ?"))
