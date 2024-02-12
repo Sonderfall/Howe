@@ -8,7 +8,8 @@ server:
 
 .PHONY: build-server
 build-server:
-	docker build -f docker/server.Dockerfile --tag sonderfal/howe:lastest .
+	docker build -f docker/server.Dockerfile --tag sonderfall/howe:latest .
+	docker push sonderfall/howe:latest
 
 .PHONY: install-client
 install-client:
@@ -17,7 +18,7 @@ install-client:
 
 .PHONY: install-server
 install-server:
-	sudo apt install nvidia-cuda-toolkit
+# sudo apt install nvidia-cuda-toolkit
 	pip3 install --upgrade pip
 	pip3 install auto-gptq --extra-index-url https://huggingface.github.io/autogptq-index/whl/cu118/
 	pip install -r requirements-server.txt

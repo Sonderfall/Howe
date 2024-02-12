@@ -37,27 +37,40 @@ class _Queue:
     url: str
     name: str
 
+def __config_from_file(config_filepath : str) -> SqsConfig:
+    with open(config_filepath, "rb") as f:
+        config = SqsConfig.from_json(f.read())
+
+    return config
+
+
+def __config_from_env() -> SqsConfig:
+    return SqsConfig(
+        url=os.environ["SQS_URL"],
+        access_key=os.environ["SQS_ACCESS_KEY"],
+        secret_key=os.environ["SQS_SECRET_KEY"],
+        region=os.environ.get("SQS_REGION", "fr-par")
+    )
+
 
 class Sqs:
     def __init__(self, config_filepath: str) -> "Sqs":
         self.__queues = {}
 
-        if not os.path.exists(config_filepath):
-            print("Cannot find sqs config", config_filepath)
-            return
+        if config_filepath is not None and os.path.exists(config_filepath):
+            config = __config_from_file(config_filepath)
+        else:
+            config = __config_from_env()
 
-        with open(config_filepath, "rb") as f:
-            config = SqsConfig.from_json(f.read())
+        session = boto3.session.Session()
 
-            session = boto3.session.Session()
-
-            self.__sqs_client = session.client(
-                service_name="sqs",
-                region_name=config.region,
-                endpoint_url=config.url,
-                aws_access_key_id=config.access_key,
-                aws_secret_access_key=config.secret_key,
-            )
+        self.__sqs_client = session.client(
+            service_name="sqs",
+            region_name=config.region,
+            endpoint_url=config.url,
+            aws_access_key_id=config.access_key,
+            aws_secret_access_key=config.secret_key,
+        )
 
     def create_queue(self, queue_name: str):
         real_queue_name = queue_name
