@@ -5,7 +5,13 @@ from dataclasses_json import dataclass_json
 
 from scaleway import Client
 from scaleway.instance.v1 import InstanceV1API
-from scaleway.instance.v1.types import Server, ServerAction, IpType
+from scaleway.instance.v1.types import (
+    Server,
+    ServerAction,
+    IpType,
+    VolumeVolumeType,
+    VolumeServerTemplate,
+)
 
 
 @dataclass_json
@@ -61,9 +67,21 @@ class ScalewayClient:
     def create_instance(self, name: str, config: ScalewayInstanceConfig) -> Server:
         instance_api = InstanceV1API(self.__scw_client)
 
+        # Two problems:
+        # 1 docker image is not known
+        # 2 must create volume before, but type mismatch
+
         print("Creating ip...")
 
+        return
+
         ip_res = instance_api.create_ip(type_=IpType.UNKNOWN_IPTYPE)
+
+        print("Creating volume...")
+
+        volume_res = instance_api.create_volume(
+            volume_type=VolumeVolumeType.L_SSD, size=512 * 10000000
+        )
 
         print("Creating server...")
 
@@ -73,6 +91,16 @@ class ScalewayClient:
             name=name,
             public_ip=ip_res.ip.id,
             enable_ipv6=True,
+            volumes=None,
+            # volumes={
+            #     volume_res.volume.id:VolumeServerTemplate(
+            #        id=volume_res.volume.id,
+            #        size=volume_res.volume.size,
+            #        name=volume_res.volume.name,
+            #        project=volume_res.volume.project,
+            #        volume_type=volume_res.volume.volume_type,
+            #     ),
+            # },
         )
 
         print("Starting server...")
