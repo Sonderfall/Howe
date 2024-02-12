@@ -9,6 +9,7 @@ server:
 .PHONY: build-server
 build-server:
 	docker build -f docker/server.Dockerfile --tag sonderfall/howe:latest .
+	docker login --username ${DOCKER_USER} --password ${DOCKER_PWD}
 	docker push sonderfall/howe:latest
 
 .PHONY: install-client

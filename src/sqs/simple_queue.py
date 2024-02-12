@@ -37,7 +37,8 @@ class _Queue:
     url: str
     name: str
 
-def __config_from_file(config_filepath : str) -> SqsConfig:
+
+def __config_from_file(config_filepath: str) -> SqsConfig:
     with open(config_filepath, "rb") as f:
         config = SqsConfig.from_json(f.read())
 
@@ -49,7 +50,7 @@ def __config_from_env() -> SqsConfig:
         url=os.environ["SQS_URL"],
         access_key=os.environ["SQS_ACCESS_KEY"],
         secret_key=os.environ["SQS_SECRET_KEY"],
-        region=os.environ.get("SQS_REGION", "fr-par")
+        region=os.environ.get("SQS_REGION", "fr-par"),
     )
 
 
