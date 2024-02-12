@@ -77,8 +77,7 @@ class ScalewayClient:
         print("Starting server...")
 
         instance_api.server_action(
-            server_id=serv_res.server.id,
-            action=ServerAction.POWERON
+            server_id=serv_res.server.id, action=ServerAction.POWERON
         )
 
         return serv_res.Server
@@ -96,8 +95,7 @@ class ScalewayClient:
         print("Stopping server...")
 
         instance_api.server_action(
-            server_id=serv_res.server.id,
-            action=ServerAction.POWEROFF
+            server_id=serv_res.server.id, action=ServerAction.POWEROFF
         )
 
         print("Destroying server...")

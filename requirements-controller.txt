@@ -2,3 +2,4 @@ fire
 black
 scaleway
 vastai
+docker
