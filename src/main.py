@@ -1,7 +1,7 @@
 from fire import Fire
 
 
-def __start_client():
+def _start_client():
     from bot.client_bot import ClientBot
 
     bot = ClientBot()
@@ -9,7 +9,7 @@ def __start_client():
     bot.live()
 
 
-def __start_server():
+def _start_server():
     from bot.server_bot import ServerBot
 
     bot = ServerBot()
@@ -17,16 +17,35 @@ def __start_server():
     bot.live()
 
 
-def main(mode: str = "client"):
-    print("Starting in", mode, "mode")
+def _spawn_server():
+    from spawner.scaleway_spawner import spawn
 
-    if mode == "client":
-        __start_client()
-    elif mode == "server":
-        __start_server()
-    else:
-        print("Unknown mode:", mode)
+    spawn()
+
+
+def _kill_server():
+    from spawner.scaleway_spawner import kill
+
+    kill()
+
+
+class Main(object):
+    def run(self, mode: str = "client"):
+        print("Starting in", mode, "mode")
+
+        if mode == "client":
+            _start_client()
+        elif mode == "server":
+            _start_server()
+        else:
+            print("Unknown mode:", mode)
+
+    def spawn(self):
+        _spawn_server()
+
+    def kill(self):
+        _kill_server()
 
 
 if __name__ == "__main__":
-    Fire(main)
+    Fire(Main)

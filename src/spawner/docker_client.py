@@ -19,7 +19,6 @@ class DockerImageConfig:
     image: str
     tag: str
     namespace: str
-    password: str
 
 
 @dataclass_json
@@ -33,7 +32,7 @@ class DockerClient:
     def __init__(self, host_config: DockerHostConfig) -> "DockerClient":
         self.__client = docker.Client(base_url=host_config.host, tls=False)
 
-    def pull_mage(self, img_config: DockerImageConfig) -> str:
+    def pull_image(self, img_config: DockerImageConfig) -> str:
         self.__client.images.pull(
             repository=f"{img_config.namespace}/{img_config.image}",
             tag=img_config.tag

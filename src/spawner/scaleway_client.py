@@ -5,7 +5,7 @@ from dataclasses_json import dataclass_json
 
 from scaleway import Client
 from scaleway.instance.v1 import InstanceV1API
-from scaleway.instance.v1.types import Server, ServerAction
+from scaleway.instance.v1.types import Server, ServerAction, IpType
 
 
 @dataclass_json
@@ -63,7 +63,7 @@ class ScalewayClient:
 
         print("Creating ip...")
 
-        ip_res = instance_api.create_ip()
+        ip_res = instance_api.create_ip(type_=IpType.UNKNOWN_IPTYPE)
 
         print("Creating server...")
 
@@ -72,6 +72,7 @@ class ScalewayClient:
             image=config.image,
             name=name,
             public_ip=ip_res.ip.id,
+            enable_ipv6=True,
         )
 
         print("Starting server...")
