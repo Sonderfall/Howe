@@ -38,14 +38,14 @@ class _Queue:
     name: str
 
 
-def __config_from_file(config_filepath: str) -> SqsConfig:
+def _config_from_file(config_filepath: str) -> SqsConfig:
     with open(config_filepath, "rb") as f:
         config = SqsConfig.from_json(f.read())
 
     return config
 
 
-def __config_from_env() -> SqsConfig:
+def _config_from_env() -> SqsConfig:
     return SqsConfig(
         url=os.environ["SQS_URL"],
         access_key=os.environ["SQS_ACCESS_KEY"],
@@ -59,9 +59,9 @@ class Sqs:
         self.__queues = {}
 
         if config_filepath is not None and os.path.exists(config_filepath):
-            config = __config_from_file(config_filepath)
+            config = _config_from_file(config_filepath)
         else:
-            config = __config_from_env()
+            config = _config_from_env()
 
         session = boto3.session.Session()
 
