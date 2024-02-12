@@ -1,12 +1,12 @@
 import time
 
-from .simple_queue import Sqs, ThinkRequest, ThinkResponse
+from sqs.sqs_client import SqsClient, ThinkRequest, ThinkResponse
 
 
 __REQUEST_QUEUE = "think_request_queue.fifo"
 __RESPONSE_QUEUE = "think_response_queue.fifo"
 
-__sqs_handler = Sqs("config/sqs.json")
+__sqs_handler = SqsClient("config/sqs.json")
 __sqs_handler.create_queue(__REQUEST_QUEUE)
 __sqs_handler.create_queue(__RESPONSE_QUEUE)
 

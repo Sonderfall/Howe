@@ -54,8 +54,8 @@ def _config_from_env() -> SqsConfig:
     )
 
 
-class Sqs:
-    def __init__(self, config_filepath: str) -> "Sqs":
+class SqsClient:
+    def __init__(self, config_filepath: str) -> "SqsClient":
         self.__queues = {}
 
         if config_filepath is not None and os.path.exists(config_filepath):

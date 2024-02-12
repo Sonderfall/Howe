@@ -1,0 +1,4 @@
+fire
+black
+scaleway
+vastai
