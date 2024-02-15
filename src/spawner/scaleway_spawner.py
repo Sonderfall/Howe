@@ -1,4 +1,5 @@
 import os
+import time
 
 from dataclasses import dataclass
 from dataclasses_json import dataclass_json
@@ -66,12 +67,13 @@ def spawn():
 
     __save(__SavedState(server_id=srv.id))
 
+    time.sleep(15)
+
     docker_client = DockerClient(
         DockerHostConfig(
             prefix="ssh://",
             port="22",
             host=srv.public_ip.address,
-            # host="51.159.128.172",
             user=__instance_config.user,
         )
     )

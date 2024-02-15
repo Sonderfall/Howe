@@ -52,6 +52,7 @@ class DockerClient:
         #   ForwardAgent no
         #   StrictHostKeyChecking no
         #   UserKnownHostsFile /dev/null
+        print("Connection to docker client...")
         self.__client = docker.client.APIClient(
             base_url=f"{host_config.prefix}{host_config.host}:{host_config.port}",
             tls=False,
@@ -59,6 +60,7 @@ class DockerClient:
         )
 
     def pull_image(self, img_config: DockerImageConfig) -> str:
+        print("Pull image...")
         self.__client.pull(repository=img_config.name, tag=img_config.tag)
 
     def create_container(
@@ -75,6 +77,7 @@ class DockerClient:
                 ]
             )
 
+        print("Starting container...")
         self.__client.create_container(
             image=img_config.full_name,
             command=ctn_config.command,
