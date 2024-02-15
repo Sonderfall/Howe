@@ -36,11 +36,10 @@ __image_config = DockerImageConfig(
 @dataclass
 class __SavedState:
     server_id: str
-    container_id: str
 
 
 def __save(state: __SavedState):
-    with open(__SAVE_FILE, "wb") as out:
+    with open(__SAVE_FILE, "w") as out:
         out.write(state.to_json())
 
 
@@ -48,7 +47,7 @@ def __load() -> __SavedState:
     if not os.path.exists(__SAVE_FILE):
         return __SavedState()
 
-    with open(__SAVE_FILE, "rb") as f:
+    with open(__SAVE_FILE, "r") as f:
         state = __SavedState.from_json(f.read())
 
     return state

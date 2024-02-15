@@ -1,16 +1,17 @@
 import os
+import time
 
 from dataclasses import dataclass
 from dataclasses_json import dataclass_json
 
 from scaleway import Client
+from scaleway.marketplace.v1 import MarketplaceV1API
 from scaleway.instance.v1 import InstanceV1API
 from scaleway.instance.v1.types import (
     Server,
+    ServerState,
     ServerAction,
     IpType,
-    VolumeVolumeType,
-    VolumeServerTemplate,
 )
 
 
@@ -64,52 +65,46 @@ class ScalewayClient:
             default_zone=config.az,
         )
 
+    def _get_image_id(self, image_name: str) -> str:
+        marketplace_api = MarketplaceV1API(self.__scw_client)
+        images = marketplace_api.list_images_all(page=0, per_page=100)
+
+        for image in images:
+            if image is not None and image.label == image_name:
+                latest_version = image.versions[0]
+
+                for local_img in latest_version.local_images:
+                    if local_img.zone == self.__scw_client.default_zone:
+                        return local_img.id
+
+        return None
+
     def create_instance(self, name: str, config: ScalewayInstanceConfig) -> Server:
         instance_api = InstanceV1API(self.__scw_client)
 
-        # Two problems:
-        # 1 docker image is not known
-        # 2 must create volume before, but type mismatch
+        print("Getting docker image...")
+        img_id = self._get_image_id(config.image)
 
         print("Creating ip...")
-
-        return
-
         ip_res = instance_api.create_ip(type_=IpType.UNKNOWN_IPTYPE)
 
-        print("Creating volume...")
-
-        volume_res = instance_api.create_volume(
-            volume_type=VolumeVolumeType.L_SSD, size=512 * 10000000
-        )
-
         print("Creating server...")
-
         serv_res = instance_api._create_server(
             commercial_type=config.type,
-            image=config.image,
+            image=img_id,
             name=name,
             public_ip=ip_res.ip.id,
             enable_ipv6=True,
-            volumes=None,
-            # volumes={
-            #     volume_res.volume.id:VolumeServerTemplate(
-            #        id=volume_res.volume.id,
-            #        size=volume_res.volume.size,
-            #        name=volume_res.volume.name,
-            #        project=volume_res.volume.project,
-            #        volume_type=volume_res.volume.volume_type,
-            #     ),
-            # },
         )
 
         print("Starting server...")
-
         instance_api.server_action(
             server_id=serv_res.server.id, action=ServerAction.POWERON
         )
 
-        return serv_res.Server
+        print("Server fully started.")
+
+        return serv_res.server
 
     def destroy_instance(self, id: str):
         instance_api = InstanceV1API(self.__scw_client)
@@ -118,28 +113,37 @@ class ScalewayClient:
             server_id=id,
         )
 
-        if serv_res is None:
+        if serv_res is None or serv_res.server is None:
+            print("Got null server")
+            return
+
+        if serv_res.server.state != ServerState.RUNNING:
+            print("Server not running")
             return
 
         print("Stopping server...")
-
         instance_api.server_action(
             server_id=serv_res.server.id, action=ServerAction.POWEROFF
         )
 
-        print("Destroying server...")
+        while serv_res.server.state != ServerState.STOPPED:
+            serv_res = instance_api.get_server(
+                server_id=id,
+            )
+            time.sleep(3)
 
+        print("Destroying server...")
         instance_api.delete_server(
             server_id=serv_res.server.id,
         )
 
         print("Destroying ip...")
-
         instance_api.delete_ip(
             ip=serv_res.server.public_ip.id,
         )
 
         print("Destroying volumes...")
-
-        for volume in serv_res.server.volumes:
+        for _, volume in serv_res.server.volumes.items():
             instance_api.delete_volume(volume_id=volume.id)
+
+        print("Server fully destroyed.")
