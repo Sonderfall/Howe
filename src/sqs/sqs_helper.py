@@ -36,15 +36,7 @@ def wait_response() -> List[ThinkResponse]:
 
         if len(responses) > 0:
             return responses
-            # whole_utterance = ""
 
-        # for r in responses:
-        #     # whole_utterance += r.utterance + " "
-
-        #     return ThinkResponse(
-        #         utterance=whole_utterance,
-        #         end=True,
-        #     )
         else:
             time.sleep(1)
 

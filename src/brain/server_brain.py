@@ -98,7 +98,8 @@ def __chat(
 
         generated_text += new_text
 
-    on_new_word(ThinkResponse(utterance=".", end=True))
+    if on_new_word is not None:
+        on_new_word(ThinkResponse(utterance=".", end=True))
 
     __history.append({"role": "assistant", "content": generated_text})
 
