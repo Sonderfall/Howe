@@ -112,7 +112,7 @@ class ScalewayClient:
 
         while serv_res.server.state != ServerState.RUNNING:
             serv_res = instance_api.get_server(
-                server_id=id,
+                server_id=serv_res.server.id,
             )
             time.sleep(3)
 

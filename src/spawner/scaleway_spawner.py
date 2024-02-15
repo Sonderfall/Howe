@@ -25,9 +25,16 @@ __instance_config = ScalewayInstanceConfig(
     user="root",
 )
 
+# __image_config = DockerImageConfig(
+#     namespace="sonderfall",
+#     image="howe",
+#     tag="latest",
+# )
+
+
 __image_config = DockerImageConfig(
-    namespace="sonderfall",
-    image="howe",
+    namespace=None,
+    image="postgres",
     tag="latest",
 )
 
@@ -59,29 +66,32 @@ def spawn():
 
     __save(__SavedState(server_id=srv.id))
 
-    # docker_client = DockerClient(
-    #     DockerHostConfig(
-    #         host=srv.public_ip.address,
-    #         user=__instance_config.user,
-    #     )
-    # )
+    docker_client = DockerClient(
+        DockerHostConfig(
+            prefix="ssh://",
+            port="22",
+            host=srv.public_ip.address,
+            # host="51.159.128.172",
+            user=__instance_config.user,
+        )
+    )
 
-    # docker_client.pull_image(__image_config)
+    docker_client.pull_image(__image_config)
 
-    # docker_client.create_container(
-    #     __image_config,
-    #     DockerContainerConfig(
-    #         name="my-server",
-    #         env={
-    #             "SQS_URL": "",
-    #             "SQS_ACCESS_KEY": "",
-    #             "SQS_SECRET_KEY": "",
-    #             "SQS_REGION": "",
-    #         },
-    #     ),
-    # )
-
-    # __save(__SavedState(server_id=srv.id, container_id=""))
+    docker_client.create_container(
+        __image_config,
+        DockerContainerConfig(
+            command=None,
+            entrypoint=None,
+            name="my-server",
+            env={
+                "SQS_URL": "",
+                "SQS_ACCESS_KEY": "",
+                "SQS_SECRET_KEY": "",
+                "SQS_REGION": "",
+            },
+        ),
+    )
 
 
 def kill():
