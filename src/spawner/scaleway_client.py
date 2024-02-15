@@ -85,6 +85,10 @@ class ScalewayClient:
         print("Getting docker image...")
         img_id = self._get_image_id(config.image)
 
+        if img_id is None:
+            print("Got None image.")
+            return None
+
         print("Creating ip...")
         ip_res = instance_api.create_ip(type_=IpType.UNKNOWN_IPTYPE)
 
@@ -101,6 +105,12 @@ class ScalewayClient:
         instance_api.server_action(
             server_id=serv_res.server.id, action=ServerAction.POWERON
         )
+
+        while serv_res.server.state != ServerState.RUNNING:
+            serv_res = instance_api.get_server(
+                server_id=id,
+            )
+            time.sleep(3)
 
         print("Server fully started.")
 
