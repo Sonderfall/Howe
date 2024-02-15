@@ -65,7 +65,7 @@ class ScalewayClient:
             default_zone=config.az,
         )
 
-    def _get_image_id(self, image_name: str) -> str:
+    def __get_image_id(self, image_name: str) -> str:
         marketplace_api = MarketplaceV1API(self.__scw_client)
         images = marketplace_api.list_images_all(page=0, per_page=100)
 
@@ -83,7 +83,7 @@ class ScalewayClient:
         instance_api = InstanceV1API(self.__scw_client)
 
         print("Getting docker image...")
-        img_id = self._get_image_id(config.image)
+        img_id = self.__get_image_id(config.image)
 
         if img_id is None:
             print("Got None image.")
@@ -100,6 +100,10 @@ class ScalewayClient:
             public_ip=ip_res.ip.id,
             enable_ipv6=True,
         )
+
+        if serv_res is None or serv_res.server is None:
+            print("Got null server.")
+            return None
 
         print("Starting server...")
         instance_api.server_action(
@@ -124,7 +128,7 @@ class ScalewayClient:
         )
 
         if serv_res is None or serv_res.server is None:
-            print("Got null server")
+            print("Got null server.")
             return
 
         if serv_res.server.state != ServerState.RUNNING:
