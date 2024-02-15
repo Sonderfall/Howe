@@ -26,15 +26,12 @@ __streamer = TextIteratorStreamer(
 __history = []
 
 
-def think(request: ThinkRequest) -> ThinkResponse:
-    def __on_new_word(k):
-        print(k)
-
+def think(request: ThinkRequest, on_new_word: callable) -> str:
     response = __chat(
         query=request.utterance,
         temperature=request.temperature,
         max_new_tokens=request.max_len,
-        on_new_word=__on_new_word,
+        on_new_word=on_new_word,
         top_k=25,
         top_p=1,
         use_cache=True,
@@ -97,9 +94,11 @@ def __chat(
 
     for new_text in __streamer:
         if on_new_word is not None:
-            on_new_word(new_text)
+            on_new_word(ThinkResponse(utterance=new_text, end=False))
 
         generated_text += new_text
+
+    on_new_word(ThinkResponse(utterance=".", end=True))
 
     __history.append({"role": "assistant", "content": generated_text})
 

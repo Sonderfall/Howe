@@ -27,8 +27,12 @@ class ServerBot(StateMachine):
 
     def on_enter_thinking(self):
         print("I am thinking")
-        response = think(self.__last_heard_utterance)
-        respond(response)
+
+        def __on_new_word(response):
+            respond(response)
+
+        think(self.__last_heard_utterance, on_new_word=__on_new_word)
+
         self.cycle()
 
     def on_exit_thinking(self):

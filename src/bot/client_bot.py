@@ -10,14 +10,8 @@ from pynput.keyboard import Key, Listener
 class ClientBot(StateMachine):
     idle = State(name="idle", initial=True)
     listening = State(name="listening")
-    thinking = State(name="thinking")
-    speaking = State(name="speaking")
-    cycle = (
-        idle.to(listening)
-        | listening.to(thinking)
-        | thinking.to(speaking)
-        | speaking.to(idle)
-    )
+    responding = State(name="responding")
+    cycle = idle.to(listening) | listening.to(responding) | responding.to(idle)
 
     def __init__(self) -> "ClientBot":
         super().__init__()
@@ -80,21 +74,19 @@ class ClientBot(StateMachine):
     def on_exit_listening(self):
         print("I am not listening anymore")
 
-    def on_enter_thinking(self):
-        print("I am thinking about", self.__last_heard_utterance)
-        self.__last_thought_utterance = think(self.__last_heard_utterance)
-        # self.__last_thought_utterance = self.__last_heard_utterance
+    def on_enter_responding(self):
+        print("I am responding about", self.__last_heard_utterance)
+
+        def __on_new_sentence(utterance: str):
+            say(utterance)
+
+        self.__last_said_utterance = think(
+            self.__last_heard_utterance, on_new_sentence=__on_new_sentence
+        )
+        print(self.__last_said_utterance)
         self.cycle()
 
-    def on_exit_thinking(self):
-        print("I am not thinking anymore")
+    def on_exit_responding(self):
+        print("I am not responding anymore")
         self.__last_heard_utterance = None
-
-    def on_enter_speaking(self):
-        print("I am speaking")
-        say(self.__last_thought_utterance)
-        self.cycle()
-
-    def on_exit_speaking(self):
-        print("I am not speaking anymore")
-        self.__last_thought_utterance = None
+        self.__last_said_utterance = None

@@ -28,8 +28,9 @@ class ThinkRequest:
 @dataclass
 class ThinkResponse:
     utterance: str
-    total_response_count: int
-    response_index: int
+    end: bool
+    # total_response_count: int
+    # response_index: int
 
 
 @dataclass

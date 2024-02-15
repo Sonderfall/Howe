@@ -102,7 +102,7 @@ class ScalewayClient:
         )
 
         if serv_res is None or serv_res.server is None:
-            print("Got null server.")
+            print("Got None server.")
             return None
 
         print("Starting server...")

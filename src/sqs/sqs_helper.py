@@ -1,5 +1,6 @@
 import time
 
+from typing import List
 from sqs.sqs_client import SqsClient, ThinkRequest, ThinkResponse
 
 
@@ -29,21 +30,21 @@ def wait_request() -> ThinkRequest:
             time.sleep(1)
 
 
-def wait_response() -> ThinkResponse:
+def wait_response() -> List[ThinkResponse]:
     while True:
-        responses = __sqs_handler.receive_messages(__RESPONSE_QUEUE, 5, ThinkResponse)
+        responses = __sqs_handler.receive_messages(__RESPONSE_QUEUE, 10, ThinkResponse)
 
         if len(responses) > 0:
-            whole_utterance = ""
+            return responses
+            # whole_utterance = ""
 
-            for r in responses:
-                whole_utterance += r.utterance + " "
+        # for r in responses:
+        #     # whole_utterance += r.utterance + " "
 
-            return ThinkResponse(
-                utterance=whole_utterance,
-                response_index=0,
-                total_response_count=len(responses),
-            )
+        #     return ThinkResponse(
+        #         utterance=whole_utterance,
+        #         end=True,
+        #     )
         else:
             time.sleep(1)
 
@@ -56,7 +57,8 @@ if __name__ == "__main__":
     print(
         respond(
             ThinkResponse(
-                utterance="woooorld", total_response_count=1, response_index=0
+                utterance="woooorld",
+                end=True,
             )
         )
     )
