@@ -1,0 +1,12 @@
+{
+    "ship_name":"Mirobolis",
+    "target_planet_name":"Zouave",
+    "ship_launch_year":"2201",
+    "accident_year":"2342",
+    "current_year":"2400",
+    "target_arrival_year":"2380",
+    "captain_name":"Suzuki",
+    "crew_1_name":"John",
+    "crew_1_job":"ingénieur",
+    "ai_name": "Monsieur Houlala"
+}
