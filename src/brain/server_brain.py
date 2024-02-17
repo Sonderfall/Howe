@@ -27,7 +27,8 @@ __tokenizer = AutoTokenizer.from_pretrained(
 __streamer = TextIteratorStreamer(
     __tokenizer, timeout=10.0, skip_prompt=True, skip_special_tokens=True
 )
-__history = get_memory()
+__history = []
+__knowledge = get_knowledge()
 
 
 def think(request: ThinkRequest, on_new_word: callable) -> str:
@@ -63,7 +64,10 @@ def __chat(
     __history.append({"role": "user", "content": query})
 
     input_ids = __tokenizer.apply_chat_template(
-        conversation=__history, add_generation_prompt=True, return_tensors="pt"
+        conversation=__history,
+        add_generation_prompt=True,
+        return_tensors="pt",
+        chat_template=__knowledge,
     ).to(__model.device)
 
     def __generate():
