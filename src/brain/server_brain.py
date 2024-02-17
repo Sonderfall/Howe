@@ -1,5 +1,6 @@
 from sqs import ThinkRequest, ThinkResponse
 from threading import Thread
+from brain.server_memory import get_memory
 
 from transformers import (
     AutoModelForCausalLM,
@@ -7,6 +8,7 @@ from transformers import (
     GenerationConfig,
     TextIteratorStreamer,
 )
+
 
 # __MODEL_NAME = "TheBloke/Vigostral-7B-Chat-GPTQ"
 # __MODEL_NAME = "bofenghuang/vigostral-7b-chat"
@@ -25,20 +27,7 @@ __tokenizer = AutoTokenizer.from_pretrained(
 __streamer = TextIteratorStreamer(
     __tokenizer, timeout=10.0, skip_prompt=True, skip_special_tokens=True
 )
-__history = [
-    {
-        "role": "user",
-        "content": "Tu vas jouer le rôle d'une Intelligence Artifielle à bord d'un vaisseau spatial. \
-        Cet un vaisseau spatial qui à pour objectif d'établir une colonie sur une planète nommée Zouave. \
-        Le vaisseau est parti en l'année 2200 et nous sommes actuellement en 2300. \
-        Le voyage aurait du durer 50 ans mais un accident est survenu. \
-        A partir de maintenant tu vas faire comme si j'étais un membre d'équipage qui venait de se réveiller de son cryo-sommeil.",
-    },
-    {
-        "role": "assistant",
-        "content": "D'accord, je vais jouer le rôle d'une Intteligence Artificielle de bord. Je vais tâcher d'être bon dans ce rôle",
-    },
-]
+__history = get_memory()
 
 
 def think(request: ThinkRequest, on_new_word: callable) -> str:

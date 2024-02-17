@@ -7,7 +7,7 @@ def think(utterance: str, on_new_sentence: callable) -> str:
             utterance=utterance,
             temperature=1,
             max_len=512,
-            top_k=25,
+            top_k=20,
             top_p=1,
         )
     )
