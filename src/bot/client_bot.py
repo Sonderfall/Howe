@@ -104,5 +104,6 @@ class ClientBot(StateMachine):
 
     def on_exit_responding(self):
         print("I am not responding anymore")
+        self.__must_play = False
         self.__last_heard_utterance = None
         self.__last_said_utterance = None
