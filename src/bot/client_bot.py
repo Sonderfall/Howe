@@ -1,11 +1,10 @@
-import threading
-
 from tts import say
 from stt import listen
 from player import play
 from brain.client_brain import think
 from statemachine import StateMachine, State
 from pynput.keyboard import Key, Listener
+from threading import Thread
 
 
 class ClientBot(StateMachine):
@@ -47,8 +46,7 @@ class ClientBot(StateMachine):
 
             return True
 
-        listener = Listener(on_press=__on_press, on_release=__on_release)
-        listener.start()
+        Listener(on_press=__on_press, on_release=__on_release).start()
 
         while True:
             pass
@@ -72,11 +70,8 @@ class ClientBot(StateMachine):
             self.__last_heard_utterance = listen(__should_listen)
             self.cycle()
 
-        thread = threading.Thread(target=__play_sound)
-        thread.start()
-
-        thread = threading.Thread(target=__start_listening)
-        thread.start()
+        Thread(target=__play_sound).start()
+        Thread(target=__start_listening).start()
 
     def on_exit_listening(self):
         print("I am not listening anymore")
@@ -98,8 +93,7 @@ class ClientBot(StateMachine):
             play("resources/bot.mp3", __should_play, loop=True)
 
         if self.__last_heard_utterance is not None:
-            thread = threading.Thread(target=__play_sound)
-            thread.start()
+            Thread(target=__play_sound).start()
 
             self.__last_said_utterance = think(
                 self.__last_heard_utterance, on_new_sentence=__on_new_sentence
