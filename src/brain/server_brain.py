@@ -1,6 +1,6 @@
 from sqs import ThinkRequest, ThinkResponse
 from threading import Thread
-from brain.server_memory import get_memory
+from brain.server_memory import get_knowledge
 
 from transformers import (
     AutoModelForCausalLM,
