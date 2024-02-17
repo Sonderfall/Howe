@@ -2,6 +2,7 @@ import threading
 
 from tts import say
 from stt import listen
+from player import play
 from brain.client_brain import think
 from statemachine import StateMachine, State
 from pynput.keyboard import Key, Listener
@@ -18,6 +19,7 @@ class ClientBot(StateMachine):
 
         self.__last_heard_utterance = None
         self.__must_listen = False
+        self.__must_play = False
 
     def live(self):
         def __on_press(key):
@@ -60,12 +62,18 @@ class ClientBot(StateMachine):
     def on_enter_listening(self):
         print("I am listening")
 
+        def __play():
+            play("resources/button.mp3")
+
         def __should_listen() -> bool:
             return self.__must_listen
 
         def __start_listening():
             self.__last_heard_utterance = listen(__should_listen)
             self.cycle()
+
+        thread = threading.Thread(target=__play)
+        thread.start()
 
         thread = threading.Thread(target=__start_listening)
         thread.start()
@@ -77,11 +85,22 @@ class ClientBot(StateMachine):
         print("I am responding about", self.__last_heard_utterance)
 
         def __on_new_sentence(utterance: str):
+            self.__must_play = False
             print("New sentence:", utterance)
             if utterance is not None:
                 say(utterance)
 
+        def __should_play() -> bool:
+            return self.__must_play
+
+        def __play():
+            self.__must_play = True
+            play("resources/bot.mp3", __should_play, loop=True)
+
         if self.__last_heard_utterance is not None:
+            thread = threading.Thread(target=__play)
+            thread.start()
+
             self.__last_said_utterance = think(
                 self.__last_heard_utterance, on_new_sentence=__on_new_sentence
             )

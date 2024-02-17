@@ -26,7 +26,7 @@ class ServerBot(StateMachine):
         print("I am not waiting anymore")
 
     def on_enter_responding(self):
-        print("I am responding")
+        print("I am responding about", self.__last_heard_utterance)
 
         def __on_new_sentence(response):
             print(response)

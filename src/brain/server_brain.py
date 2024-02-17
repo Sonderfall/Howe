@@ -10,16 +10,13 @@ from transformers import (
 
 # __MODEL_NAME = "TheBloke/Vigostral-7B-Chat-GPTQ"
 # __MODEL_NAME = "bofenghuang/vigostral-7b-chat"
+# https://github.com/bofenghuang/vigogne
 __MODEL_NAME = "bofenghuang/vigogne-2-13b-chat"
 # __REVISION = "main"
 # __REVISION = "gptq-8bit-32g-actorder_True" ## crash
 
-__model = AutoModelForCausalLM.from_pretrained(
-    __MODEL_NAME, device_map="cuda:0"
-)
-__tokenizer = AutoTokenizer.from_pretrained(
-    __MODEL_NAME, use_fast=True
-)
+__model = AutoModelForCausalLM.from_pretrained(__MODEL_NAME, device_map="cuda:0")
+__tokenizer = AutoTokenizer.from_pretrained(__MODEL_NAME, use_fast=True)
 __streamer = TextIteratorStreamer(
     __tokenizer, timeout=10.0, skip_prompt=True, skip_special_tokens=True
 )
@@ -63,8 +60,7 @@ def __chat(
     ).to(__model.device)
 
     def __generate():
-        # input_length = input_ids.shape[1]
-        generated_outputs = __model.generate(
+        _ = __model.generate(
             input_ids=input_ids,
             generation_config=GenerationConfig(
                 temperature=temperature,
@@ -95,7 +91,6 @@ def __chat(
             or "!" in new_text
             or ";" in new_text
             or ":" in new_text
-            # or "," in new_text
         ):
             if on_new_word is not None:
                 on_new_word(ThinkResponse(utterance=current_sentence, end=False))
