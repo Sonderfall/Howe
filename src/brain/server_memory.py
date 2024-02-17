@@ -63,14 +63,14 @@ __history = [
         "role": "assistant",
         "content": "D'accord",
     },
-    {
-        "role": "user",
-        "content": f"A partir de maintenant tu vas faire comme si j'étais un membre d'équipage qui venait de se réveiller de son cryo-sommeil.",
-    },
-    {
-        "role": "assistant",
-        "content": "D'accord. Je vais tâcher d'être bon dans ce rôle.",
-    },
+    # {
+    #     "role": "user",
+    #     "content": f"A partir de maintenant tu vas faire comme si j'étais un membre d'équipage qui venait de se réveiller de son cryo-sommeil.",
+    # },
+    # {
+    #     "role": "assistant",
+    #     "content": "D'accord. Je vais tâcher d'être bon dans ce rôle.",
+    # },
 ]
 
 
