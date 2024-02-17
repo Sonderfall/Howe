@@ -79,7 +79,7 @@ class ClientBot(StateMachine):
 
         def __on_new_sentence(utterance: str):
             print("New sentence:", utterance)
-            thread = threading.Thread(target=say, args=(utterance))
+            thread = threading.Thread(target=say, utterance=utterance)
             thread.start()
             # say(utterance)
 

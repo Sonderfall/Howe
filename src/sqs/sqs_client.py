@@ -75,8 +75,8 @@ class SqsClient:
     def create_queue(self, queue_name: str):
         real_queue_name = queue_name
 
-        if not queue_name.endswith(".fifo"):
-            real_queue_name = queue_name + ".fifo"
+        # if not queue_name.endswith(".fifo"):
+        #     real_queue_name = queue_name + ".fifo"
 
         try:
             queue = self.__sqs_client.create_queue(
@@ -85,7 +85,7 @@ class SqsClient:
                     "MaximumMessageSize": str(4096),
                     "ReceiveMessageWaitTimeSeconds": "0",
                     "VisibilityTimeout": str(300),
-                    "FifoQueue": "true",
+                    "FifoQueue": "false",
                 },
             )
         except:
