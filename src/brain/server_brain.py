@@ -10,7 +10,8 @@ from transformers import (
 
 __MODEL_NAME = "TheBloke/Vigostral-7B-Chat-GPTQ"
 # __REVISION = "main"
-__REVISION = "gptq-8bit-32g-actorder_True"
+# __REVISION = "gptq-8bit-32g-actorder_True" ## crash
+__REVISION = "gptq-8bit-128g-actorder_True"
 
 __model = AutoModelForCausalLM.from_pretrained(
     __MODEL_NAME, revision=__REVISION, device_map="cuda:0"
