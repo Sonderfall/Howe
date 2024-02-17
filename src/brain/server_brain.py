@@ -28,12 +28,16 @@ __streamer = TextIteratorStreamer(
 __history = [
     {
         "role": "user",
-        "content": "Tu vas jouer le role d'une Intelligence Artifielle à bord d'un vaisseau spatial. \
+        "content": "Tu vas jouer le rôle d'une Intelligence Artifielle à bord d'un vaisseau spatial. \
         Cet un vaisseau spatial qui à pour objectif d'établir une colonie sur une planète nommée Zouave. \
         Le vaisseau est parti en l'année 2200 et nous sommes actuellement en 2300. \
         Le voyage aurait du durer 50 ans mais un accident est survenu. \
         A partir de maintenant tu vas faire comme si j'étais un membre d'équipage qui venait de se réveiller de son cryo-sommeil.",
-    }
+    },
+    {
+        "role": "assistant",
+        "content": "D'accord, je vais jouer le rôle d'une Intteligence Artificielle de bord. Je vais tâcher d'être bon dans ce rôle",
+    },
 ]
 
 
