@@ -8,16 +8,17 @@ from transformers import (
     TextIteratorStreamer,
 )
 
-__MODEL_NAME = "TheBloke/Vigostral-7B-Chat-GPTQ"
+# __MODEL_NAME = "TheBloke/Vigostral-7B-Chat-GPTQ"
+__MODEL_NAME = "bofenghuang/vigostral-7b-chat"
 # __REVISION = "main"
 # __REVISION = "gptq-8bit-32g-actorder_True" ## crash
-__REVISION = "gptq-8bit-128g-actorder_True"
+# __REVISION = "gptq-8bit--1g-actorder_True"
 
 __model = AutoModelForCausalLM.from_pretrained(
-    __MODEL_NAME, revision=__REVISION, device_map="cuda:0"
+    __MODEL_NAME, device_map="cuda:0"
 )
 __tokenizer = AutoTokenizer.from_pretrained(
-    __MODEL_NAME, revision=__REVISION, use_fast=True
+    __MODEL_NAME, use_fast=True
 )
 __streamer = TextIteratorStreamer(
     __tokenizer, timeout=10.0, skip_prompt=True, skip_special_tokens=True
@@ -33,7 +34,7 @@ def think(request: ThinkRequest, on_new_word: callable) -> str:
         on_new_word=on_new_word,
         top_k=25,
         top_p=1,
-        use_cache=True,
+        use_cache=False,
     )
 
     print(response)
