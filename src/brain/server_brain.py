@@ -95,6 +95,7 @@ def __chat(
             or "!" in new_text
             or ";" in new_text
             or ":" in new_text
+            or "," in new_text
         ):
             if on_new_word is not None:
                 on_new_word(ThinkResponse(utterance=current_sentence, end=False))
