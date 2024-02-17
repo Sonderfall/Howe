@@ -27,7 +27,7 @@ def __config_from_file(config_filepath: str) -> __LoreConfig:
 
 __lore = __config_from_file("resources/knowledge_s01e01.json")
 
-__knowledge_s01e01 = f" \
+__knowledge_s01e01_step_0 = f" \
         Tu vas jouer le rôle d'une Intelligence Artifielle à bord d'un vaisseau spatial. Ton nom est {__lore.ai_name}. \
         Le nom du vaisseau spatial est {__lore.ship_name} et son capitaine s'appelle {__lore.captain_name}. \
         Cet un vaisseau spatial qui à pour objectif d'établir une colonie sur une planète nommée {__lore.target_planet_name}. \
@@ -38,7 +38,7 @@ __knowledge_s01e01 = f" \
 
 
 def get_knowledge() -> list:
-    return __knowledge_s01e01
+    return __knowledge_s01e01_step_0
 
 
 if __name__ == "__main__":
