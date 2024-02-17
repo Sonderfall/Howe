@@ -13,9 +13,9 @@ from transformers import (
 # __MODEL_NAME = "TheBloke/Vigostral-7B-Chat-GPTQ"
 # __MODEL_NAME = "bofenghuang/vigostral-7b-chat"
 # https://github.com/bofenghuang/vigogne
-__MODEL_NAME = "bofenghuang/vigogne-2-7b-chat"
 # __REVISION = "main"
 # __REVISION = "gptq-8bit-32g-actorder_True" ## crash
+__MODEL_NAME = "bofenghuang/vigogne-2-7b-chat"
 __REVISION = "v2.0"
 
 __model = AutoModelForCausalLM.from_pretrained(

@@ -36,34 +36,6 @@ __knowledge_s01e01 = f" \
         A partir de maintenant tu vas faire comme si j'étais un membre d'équipage qui venait de se réveiller de son cryo-sommeil. \
         "
 
-# __knowledge_s01e01 = [
-#         "content": f"Tu vas jouer le rôle d'une Intelligence Artifielle à bord d'un vaisseau spatial. Ton nom est {__lore.ai_name}. \
-#         Le nom du vaisseau spatial est {__lore.ship_name} et son capitaine s'appelle {__lore.captain_name}.",
-#     },
-#     {
-#         "role": "assistant",
-#         "content": f"D'accord, je vais jouer le rôle d'une Intteligence Artificielle à bord du vaisseau {__lore.ship_name}.",
-#     },
-# {
-#     "role": "user",
-#     "content": f"C'est un vaisseau spatial qui à pour objectif d'établir une colonie sur une planète nommée {__lore.target_planet_name}. \
-#     Le vaisseau est parti en l'année {__lore.ship_launch_year} et nous sommes actuellement en {__lore.current_year}. \
-#     Le voyage aurait du durer {__lore.estimated_travel_duration} ans mais un accident est survenu.",
-# },
-# {
-#     "role": "assistant",
-#     "content": "D'accord",
-# },
-# {
-#     "role": "user",
-#     "content": f"A partir de maintenant tu vas faire comme si j'étais un membre d'équipage qui venait de se réveiller de son cryo-sommeil.",
-# },
-# {
-#     "role": "assistant",
-#     "content": "D'accord. Je vais tâcher d'être bon dans ce rôle.",
-# },
-# ]
-
 
 def get_knowledge() -> list:
     return __knowledge_s01e01
