@@ -12,7 +12,6 @@ from transformers import (
 __MODEL_NAME = "bofenghuang/vigostral-7b-chat"
 # __REVISION = "main"
 # __REVISION = "gptq-8bit-32g-actorder_True" ## crash
-# __REVISION = "gptq-8bit--1g-actorder_True"
 
 __model = AutoModelForCausalLM.from_pretrained(
     __MODEL_NAME, device_map="cuda:0"
@@ -95,7 +94,7 @@ def __chat(
             or "!" in new_text
             or ";" in new_text
             or ":" in new_text
-            or "," in new_text
+            # or "," in new_text
         ):
             if on_new_word is not None:
                 on_new_word(ThinkResponse(utterance=current_sentence, end=False))
