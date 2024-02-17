@@ -8,10 +8,7 @@ from transformers import (
     TextIteratorStreamer,
 )
 
-# __MODEL_NAME = "bofenghuang/vigogne-2-7b-chat"
-# __REVISION = "v2.0"
 __MODEL_NAME = "TheBloke/Vigostral-7B-Chat-GPTQ"
-# __REVISION = "gptq-4bit-32g-actorder_True"
 __REVISION = "main"
 
 __model = AutoModelForCausalLM.from_pretrained(
@@ -38,10 +35,6 @@ def think(request: ThinkRequest, on_new_word: callable) -> str:
     )
 
     print(response)
-
-    response = ThinkResponse(
-        utterance=response, total_response_count=1, response_index=0
-    )
 
     return response
 
@@ -99,7 +92,7 @@ def __chat(
         generated_text += new_text
 
     if on_new_word is not None:
-        on_new_word(ThinkResponse(utterance=".", end=True))
+        on_new_word(ThinkResponse(utterance="", end=True))
 
     __history.append({"role": "assistant", "content": generated_text})
 

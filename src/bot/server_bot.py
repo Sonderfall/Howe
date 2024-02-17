@@ -26,12 +26,14 @@ class ServerBot(StateMachine):
         print("I am not waiting anymore")
 
     def on_enter_thinking(self):
-        print("I am thinking")
+        print("I am thinking about", self.__last_heard_utterance)
 
         def __on_new_word(response):
+            print(response)
             respond(response)
 
-        think(self.__last_heard_utterance, on_new_word=__on_new_word)
+        if self.__last_heard_utterance is not None:
+            think(self.__last_heard_utterance, on_new_word=__on_new_word)
 
         self.cycle()
 
