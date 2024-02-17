@@ -78,12 +78,17 @@ class ClientBot(StateMachine):
         print("I am responding about", self.__last_heard_utterance)
 
         def __on_new_sentence(utterance: str):
-            say(utterance)
+            print("New sentence:", utterance)
+            thread = threading.Thread(target=say, args=(utterance))
+            thread.start()
+            # say(utterance)
 
-        self.__last_said_utterance = think(
-            self.__last_heard_utterance, on_new_sentence=__on_new_sentence
-        )
-        print(self.__last_said_utterance)
+        if self.__last_heard_utterance is not None:
+            self.__last_said_utterance = think(
+                self.__last_heard_utterance, on_new_sentence=__on_new_sentence
+            )
+            print(self.__last_said_utterance)
+
         self.cycle()
 
     def on_exit_responding(self):

@@ -5,9 +5,9 @@ from brain.server_brain import think
 
 class ServerBot(StateMachine):
     idle = State(name="idle", initial=True)
-    thinking = State(name="thinking")
+    responding = State(name="responding")
 
-    cycle = idle.to(thinking) | thinking.to(idle)
+    cycle = idle.to(responding) | responding.to(idle)
 
     def __init__(self) -> "ServerBot":
         super().__init__()
@@ -25,8 +25,8 @@ class ServerBot(StateMachine):
     def on_exit_idle(self):
         print("I am not waiting anymore")
 
-    def on_enter_thinking(self):
-        print("I am thinking about", self.__last_heard_utterance)
+    def on_enter_responding(self):
+        print("I am responding")
 
         def __on_new_word(response):
             print(response)
@@ -37,6 +37,6 @@ class ServerBot(StateMachine):
 
         self.cycle()
 
-    def on_exit_thinking(self):
-        print("I am not thinking anymore")
+    def on_exit_responding(self):
+        print("I am not responding anymore")
         self.__last_heard_utterance = None

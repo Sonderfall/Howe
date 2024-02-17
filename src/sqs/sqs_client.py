@@ -133,6 +133,7 @@ class SqsClient:
         for msg in messages:
             body = msg["Body"]
             handler = msg["ReceiptHandle"]
+            print("Getting sqs message", body)
 
             if type == ThinkResponse:
                 array.append(ThinkResponse.from_json(body))

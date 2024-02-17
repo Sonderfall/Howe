@@ -11,10 +11,15 @@ def say(utterance: str):
 
     filepath = "output.mp3"
 
+    print("start synthethyze")
+
     __synthesize(utterance, filepath)
+
+    print("end synthethyze")
 
     __play(filepath)
 
+    print("end play")
 
 def __synthesize(utterance: str, output: str):
     # Create credentials
@@ -31,7 +36,7 @@ def __synthesize(utterance: str, output: str):
     # Build the voice request, select the language code ("en-US") and the ssml
     # voice gender ("neutral")
     voice = texttospeech.VoiceSelectionParams(
-        language_code="fr-CA", ssml_gender=texttospeech.SsmlVoiceGender.FEMALE
+        language_code="fr-FR", ssml_gender=texttospeech.SsmlVoiceGender.FEMALE
     )
 
     # Select the type of audio file you want returned
