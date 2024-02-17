@@ -16,12 +16,25 @@ __MODEL_NAME = "bofenghuang/vigogne-2-7b-chat"
 # __REVISION = "gptq-8bit-32g-actorder_True" ## crash
 __REVISION = "v2.0"
 
-__model = AutoModelForCausalLM.from_pretrained(__MODEL_NAME, revision=__REVISION, device_map="cuda:0")
-__tokenizer = AutoTokenizer.from_pretrained(__MODEL_NAME, revision=__REVISION, use_fast=True)
+__model = AutoModelForCausalLM.from_pretrained(
+    __MODEL_NAME, revision=__REVISION, device_map="cuda:0"
+)
+__tokenizer = AutoTokenizer.from_pretrained(
+    __MODEL_NAME, revision=__REVISION, use_fast=True
+)
 __streamer = TextIteratorStreamer(
     __tokenizer, timeout=10.0, skip_prompt=True, skip_special_tokens=True
 )
-__history = []
+__history = [
+    {
+        "role": "user",
+        "content": "Tu vas jouer le role d'une Intelligence Artifielle à bord d'un vaisseau spatial. \
+        Cet un vaisseau spatial qui à pour objectif d'établir une colonie sur une planète nommée Zouave. \
+        Le vaisseau est parti en l'année 2200 et nous sommes actuellement en 2300. \
+        Le voyage aurait du durer 50 ans mais un accident est survenu. \
+        A partir de maintenant tu vas faire comme si j'étais un membre d'équipage qui venait de se réveiller de son cryo-sommeil.",
+    }
+]
 
 
 def think(request: ThinkRequest, on_new_word: callable) -> str:
@@ -30,8 +43,8 @@ def think(request: ThinkRequest, on_new_word: callable) -> str:
         temperature=request.temperature,
         max_new_tokens=request.max_len,
         on_new_word=on_new_word,
-        top_k=25,
-        top_p=1,
+        top_k=request.top_k,
+        top_p=request.top_p,
         use_cache=False,
     )
 

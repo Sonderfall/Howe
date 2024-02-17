@@ -22,6 +22,8 @@ class ThinkRequest:
     utterance: str
     temperature: float
     max_len: int
+    top_k: int
+    top_p: int
 
 
 @dataclass_json
