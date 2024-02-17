@@ -83,20 +83,34 @@ def __chat(
     thread = Thread(target=__generate)
     thread.start()
 
-    generated_text = ""
+    whole_utterance = ""
+    current_sentence = ""
 
     for new_text in __streamer:
-        if on_new_word is not None:
-            on_new_word(ThinkResponse(utterance=new_text, end=False))
+        current_sentence += new_text
 
-        generated_text += new_text
+        if (
+            "." in new_text
+            or "?" in new_text
+            or "!" in new_text
+            or ";" in new_text
+            or ":" in new_text
+        ):
+            if on_new_word is not None:
+                on_new_word(ThinkResponse(utterance=current_sentence, end=False))
+
+            whole_utterance += current_sentence
+            current_sentence = ""
+            # on_new_word(ThinkResponse(utterance=new_text, end=False))
+
+        # whole_utterance += new_text
 
     if on_new_word is not None:
         on_new_word(ThinkResponse(utterance="", end=True))
 
-    __history.append({"role": "assistant", "content": generated_text})
+    __history.append({"role": "assistant", "content": whole_utterance})
 
-    return generated_text
+    return whole_utterance
 
 
 if __name__ == "__main__":

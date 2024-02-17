@@ -21,6 +21,7 @@ def say(utterance: str):
 
     print("end play")
 
+
 def __synthesize(utterance: str, output: str):
     # Create credentials
     credentials = service_account.Credentials.from_service_account_file(

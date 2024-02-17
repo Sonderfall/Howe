@@ -1,5 +1,6 @@
 from sqs import request, wait_response, ThinkRequest
 
+
 def think(utterance: str, on_new_sentence: callable) -> str:
     request(
         ThinkRequest(
