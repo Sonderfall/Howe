@@ -18,21 +18,23 @@ def think(utterance: str, on_new_sentence: callable) -> str:
         responses = wait_response()
 
         for response in responses:
-            current_sentence += response.utterance + " "
+            # current_sentence += response.utterance + " "
             if response.end:
                 should_continue = False
 
-        if (
-            "." in response.utterance
-            or "?" in response.utterance
-            or "!" in response.utterance
-            or ";" in response.utterance
-            or ":" in response.utterance
-            # or "," in response.utterance
-        ):
-            whole_utterance += current_sentence
-            on_new_sentence(current_sentence)
-            current_sentence = ""
+        whole_utterance += current_sentence
+        on_new_sentence(current_sentence)
+
+        # if (
+        #     "." in response.utterance
+        #     or "?" in response.utterance
+        #     or "!" in response.utterance
+        #     or ";" in response.utterance
+        #     or ":" in response.utterance
+        #     # or "," in response.utterance
+        # ):
+
+            # current_sentence = ""
 
     return whole_utterance
 

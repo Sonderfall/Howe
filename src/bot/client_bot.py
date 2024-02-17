@@ -79,8 +79,6 @@ class ClientBot(StateMachine):
 
         def __on_new_sentence(utterance: str):
             print("New sentence:", utterance)
-            # thread = threading.Thread(target=say, utterance=utterance)
-            # thread.start()
             say(utterance)
 
         if self.__last_heard_utterance is not None:
