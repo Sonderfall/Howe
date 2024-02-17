@@ -19,10 +19,10 @@ install-client:
 
 .PHONY: install-server
 install-server:
-# sudo apt install nvidia-cuda-toolkit
 	pip3 install --upgrade pip
 	pip3 install auto-gptq --extra-index-url https://huggingface.github.io/autogptq-index/whl/cu118/
 	pip install -r requirements-server.txt
+	export PYTHONPATH=${PYTHONPATH}:$(pwd)/src
 
 .PHONY: install-controller
 install-controller:
