@@ -17,7 +17,6 @@ class ClientBot(StateMachine):
         super().__init__()
 
         self.__last_heard_utterance = None
-        self.__last_thought_utterance = None
         self.__must_listen = False
 
     def live(self):

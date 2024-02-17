@@ -1,5 +1,4 @@
 from sqs import request, wait_response, ThinkRequest
-from threading import Thread
 
 def think(utterance: str, on_new_sentence: callable) -> str:
     request(
@@ -20,8 +19,7 @@ def think(utterance: str, on_new_sentence: callable) -> str:
             if response.end:
                 should_continue = False
             else:
-                thread = Thread(target=on_new_sentence(response.utterance))
-                thread.start()
+                on_new_sentence(response.utterance)
                 whole_utterance += response.utterance + " "
 
     return whole_utterance

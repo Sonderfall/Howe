@@ -28,12 +28,12 @@ class ServerBot(StateMachine):
     def on_enter_responding(self):
         print("I am responding")
 
-        def __on_new_word(response):
+        def __on_new_sentence(response):
             print(response)
             respond(response)
 
         if self.__last_heard_utterance is not None:
-            think(self.__last_heard_utterance, on_new_word=__on_new_word)
+            think(self.__last_heard_utterance, on_new_word=__on_new_sentence)
 
         self.cycle()
 

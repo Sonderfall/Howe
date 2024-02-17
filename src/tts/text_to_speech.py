@@ -4,6 +4,7 @@ from pygame import mixer
 from google.cloud import texttospeech
 from google.oauth2 import service_account
 
+__VOICE_GOOGLE_1 = "fr-FR-Wavenet-B"
 
 def say(utterance: str):
     if utterance is None:
@@ -31,7 +32,7 @@ def __synthesize(utterance: str, output: str):
     # Build the voice request, select the language code ("en-US") and the ssml
     # voice gender ("neutral")
     voice = texttospeech.VoiceSelectionParams(
-        language_code="fr-FR", ssml_gender=texttospeech.SsmlVoiceGender.FEMALE
+        language_code="fr-FR", ssml_gender=texttospeech.SsmlVoiceGender.MALE, name=__VOICE_GOOGLE_1,
     )
 
     # Select the type of audio file you want returned
