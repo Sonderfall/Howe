@@ -77,9 +77,6 @@ def __chat(
             return_dict_in_generate=True,
         )
 
-        # generated_tokens = generated_outputs.sequences[0, input_length:]
-        # generated_text = __tokenizer.decode(generated_tokens, skip_special_tokens=True)
-
     thread = Thread(target=__generate)
     thread.start()
 
@@ -101,9 +98,6 @@ def __chat(
 
             whole_utterance += current_sentence
             current_sentence = ""
-            # on_new_word(ThinkResponse(utterance=new_text, end=False))
-
-        # whole_utterance += new_text
 
     if on_new_word is not None:
         on_new_word(ThinkResponse(utterance="", end=True))

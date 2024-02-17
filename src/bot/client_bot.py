@@ -79,7 +79,8 @@ class ClientBot(StateMachine):
 
         def __on_new_sentence(utterance: str):
             print("New sentence:", utterance)
-            say(utterance)
+            if utterance is not None:
+                say(utterance)
 
         if self.__last_heard_utterance is not None:
             self.__last_said_utterance = think(

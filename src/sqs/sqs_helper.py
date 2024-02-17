@@ -10,6 +10,8 @@ __RESPONSE_QUEUE = "think_response_queue.fifo"
 __sqs_handler = SqsClient("config/sqs.json")
 __sqs_handler.create_queue(__REQUEST_QUEUE)
 __sqs_handler.create_queue(__RESPONSE_QUEUE)
+__sqs_handler.purge(__REQUEST_QUEUE)
+__sqs_handler.purge(__RESPONSE_QUEUE)
 
 
 def request(req: ThinkRequest) -> str:

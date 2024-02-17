@@ -11,15 +11,9 @@ def say(utterance: str):
 
     filepath = "output.mp3"
 
-    print("start synthethyze")
-
     __synthesize(utterance, filepath)
 
-    print("end synthethyze")
-
     __play(filepath)
-
-    print("end play")
 
 
 def __synthesize(utterance: str, output: str):

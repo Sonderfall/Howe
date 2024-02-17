@@ -133,7 +133,6 @@ class SqsClient:
         for msg in messages:
             body = msg["Body"]
             handler = msg["ReceiptHandle"]
-            print("Getting sqs message", body)
 
             if type == ThinkResponse:
                 array.append(ThinkResponse.from_json(body))
@@ -143,3 +142,10 @@ class SqsClient:
             self.__sqs_client.delete_message(QueueUrl=queue.url, ReceiptHandle=handler)
 
         return array
+
+    def purge(self, queue_name: str):
+        queue = self.__queues[queue_name]
+
+        self.__sqs_client.purge_queue(
+            QueueUrl=queue.url,
+        )
