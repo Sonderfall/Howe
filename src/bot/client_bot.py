@@ -62,7 +62,7 @@ class ClientBot(StateMachine):
     def on_enter_listening(self):
         print("I am listening")
 
-        def __play():
+        def __play_sound():
             play("resources/button.mp3")
 
         def __should_listen() -> bool:
@@ -72,7 +72,7 @@ class ClientBot(StateMachine):
             self.__last_heard_utterance = listen(__should_listen)
             self.cycle()
 
-        thread = threading.Thread(target=__play)
+        thread = threading.Thread(target=__play_sound)
         thread.start()
 
         thread = threading.Thread(target=__start_listening)
@@ -93,12 +93,12 @@ class ClientBot(StateMachine):
         def __should_play() -> bool:
             return self.__must_play
 
-        def __play():
+        def __play_sound():
             self.__must_play = True
             play("resources/bot.mp3", __should_play, loop=True)
 
         if self.__last_heard_utterance is not None:
-            thread = threading.Thread(target=__play)
+            thread = threading.Thread(target=__play_sound)
             thread.start()
 
             self.__last_said_utterance = think(
