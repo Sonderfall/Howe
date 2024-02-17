@@ -10,7 +10,7 @@ from transformers import (
 
 # __MODEL_NAME = "TheBloke/Vigostral-7B-Chat-GPTQ"
 # __MODEL_NAME = "bofenghuang/vigostral-7b-chat"
-__MODEL_NAME = "bofenghuang/vignone-2-13b-chat"
+__MODEL_NAME = "bofenghuang/vigogne-2-13b-chat"
 # __REVISION = "main"
 # __REVISION = "gptq-8bit-32g-actorder_True" ## crash
 
