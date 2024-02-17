@@ -14,9 +14,10 @@ from transformers import (
 __MODEL_NAME = "bofenghuang/vigogne-2-7b-chat"
 # __REVISION = "main"
 # __REVISION = "gptq-8bit-32g-actorder_True" ## crash
+__REVISION = "v2.0"
 
-__model = AutoModelForCausalLM.from_pretrained(__MODEL_NAME, device_map="cuda:0")
-__tokenizer = AutoTokenizer.from_pretrained(__MODEL_NAME, use_fast=True)
+__model = AutoModelForCausalLM.from_pretrained(__MODEL_NAME, revision=__REVISION, device_map="cuda:0")
+__tokenizer = AutoTokenizer.from_pretrained(__MODEL_NAME, revision=__REVISION, use_fast=True)
 __streamer = TextIteratorStreamer(
     __tokenizer, timeout=10.0, skip_prompt=True, skip_special_tokens=True
 )
