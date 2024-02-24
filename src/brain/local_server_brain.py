@@ -127,6 +127,7 @@ def __chat(
 
 
 if __name__ == "__main__":
+
     def __test(utterance: str):
         import time
 

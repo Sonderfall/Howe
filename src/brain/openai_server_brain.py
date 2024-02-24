@@ -10,7 +10,7 @@ __SAVE_FILE = "tmp/history.json"
 
 @dataclass_json
 @dataclass
-class __OpenAICOnfig:
+class __OpenAIConfig:
     api_key: str
     organization_id: str
 
@@ -36,9 +36,7 @@ def __load() -> __SavedState:
     if not os.path.exists(__SAVE_FILE):
         step_state = 0
         return __SavedState(
-            history=[
-                {"role": "system", "content": get_knowledge(step_state)}
-            ],
+            history=[{"role": "system", "content": get_knowledge(step_state)}],
             step=step_state,
         )
 
@@ -48,17 +46,16 @@ def __load() -> __SavedState:
     return state
 
 
-def __config_from_file(config_filepath: str) -> __OpenAICOnfig:
+def __config_from_file(config_filepath: str) -> __OpenAIConfig:
     with open(config_filepath, "rb") as f:
-        config = __OpenAICOnfig.from_json(f.read())
+        config = __OpenAIConfig.from_json(f.read())
 
     return config
 
 
 __client_config = __config_from_file("config/openai.json")
 __client = OpenAI(
-    api_key=__client_config.api_key,
-    organization=__client_config.organization_id
+    api_key=__client_config.api_key, organization=__client_config.organization_id
 )
 
 
@@ -83,6 +80,7 @@ def think(utterance: str, on_new_sentence: callable = None) -> str:
 
 
 if __name__ == "__main__":
+
     def __test(utterance: str):
         import time
 

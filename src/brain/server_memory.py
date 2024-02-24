@@ -85,7 +85,7 @@ __knowledge_s01e01_step_0 = f"""
         """
 
 
-def get_knowledge(step : int) -> list:
+def get_knowledge(step: int) -> list:
     return __knowledge_s01e01_step_0
 
 
