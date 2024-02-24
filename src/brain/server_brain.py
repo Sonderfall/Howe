@@ -132,6 +132,8 @@ def __chat(
 
 
 def __test(utterance: str):
+    import time
+
     default_top_k = 25
     default_top_p = 2
     default_max_len = 512
@@ -150,6 +152,8 @@ def __test(utterance: str):
             )
         ),
     )
+    print("===============================")
+    time.sleep(5)
 
 
 if __name__ == "__main__":
