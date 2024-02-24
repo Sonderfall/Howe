@@ -126,7 +126,7 @@ def __chat(
 
     __history.append({"role": "assistant", "content": whole_utterance})
 
-    print("END", query)
+    print("END", query, whole_utterance)
 
     return whole_utterance
 
