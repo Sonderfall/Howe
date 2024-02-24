@@ -1,5 +1,6 @@
 {
     "ship_name":"Mehara",
+    "shuttle_name": "Ranger",
     "target_planet_name":"Veld",
     "ship_launch_year":"2140",
     "accident_year":"2290",
@@ -10,18 +11,18 @@
     "doctor_death_year": "2321",
     "ai_last_interaction_duration": "109",
     "estimated_travel_duration":"200",
+    "pioneer_count": "10000",
     "captain_name":"Suzuki",
     "captain_hobby":"jouer de la trompette",
-    "second_captain_name": "",
+    "second_captain_name": "Kevin",
+    "crew_count": "3",
     "crew_1_name":"John",
     "crew_1_job":"ingénieur",
     "crew_2_name":"John",
     "crew_2_job":"ingénieur",
     "crew_3_name":"John",
     "crew_3_job":"ingénieur",
-    "crew_4_name":"John",
-    "crew_4_job":"ingénieur",
     "ai_name": "Madame Jean-René",
-    "empty_cryo": "9",
-    "missing_cryo": "74"
+    "empty_cryo_count": "9",
+    "missing_cryo_count": "74"
 }

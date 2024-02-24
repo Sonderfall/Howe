@@ -51,8 +51,6 @@ def think(request: ThinkRequest, on_new_sentence: callable = None) -> str:
         use_cache=True,
     )
 
-    # print(response)
-
     return response
 
 
@@ -125,8 +123,6 @@ def __chat(
         on_new_sentence(ThinkResponse(utterance="", end=True))
 
     __history.append({"role": "assistant", "content": whole_utterance})
-
-    print("END", query, whole_utterance)
 
     return whole_utterance
 
