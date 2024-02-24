@@ -33,7 +33,7 @@ class ServerBot(StateMachine):
             respond(response)
 
         if self.__last_heard_utterance is not None:
-            think(self.__last_heard_utterance, on_new_word=__on_new_sentence)
+            think(self.__last_heard_utterance, on_new_sentence=__on_new_sentence)
 
         self.cycle()
 

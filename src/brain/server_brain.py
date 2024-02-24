@@ -31,18 +31,18 @@ __history = []
 __knowledge = get_knowledge()
 
 
-def think(request: ThinkRequest, on_new_word: callable) -> str:
+def think(request: ThinkRequest, on_new_sentence: callable = None) -> str:
     response = __chat(
         query=request.utterance,
         temperature=request.temperature,
         max_new_tokens=request.max_len,
-        on_new_word=on_new_word,
+        on_new_sentence=on_new_sentence,
         top_k=request.top_k,
         top_p=request.top_p,
         use_cache=False,
     )
 
-    print(response)
+    # print(response)
 
     return response
 
@@ -50,7 +50,7 @@ def think(request: ThinkRequest, on_new_word: callable) -> str:
 def __chat(
     query: str,
     temperature: float = 0.7,
-    on_new_word: callable = None,
+    on_new_sentence: callable = None,
     top_p: float = 1.0,
     top_k: float = 0,
     repetition_penalty: float = 1.1,
@@ -102,14 +102,14 @@ def __chat(
             or ";" in new_text
             or ":" in new_text
         ):
-            if on_new_word is not None:
-                on_new_word(ThinkResponse(utterance=current_sentence, end=False))
+            if on_new_sentence is not None:
+                on_new_sentence(ThinkResponse(utterance=current_sentence, end=False))
 
             whole_utterance += current_sentence
             current_sentence = ""
 
-    if on_new_word is not None:
-        on_new_word(ThinkResponse(utterance="", end=True))
+    if on_new_sentence is not None:
+        on_new_sentence(ThinkResponse(utterance="", end=True))
 
     __history.append({"role": "assistant", "content": whole_utterance})
 
