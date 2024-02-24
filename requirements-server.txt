@@ -8,3 +8,4 @@ transformers
 huggingface-hub
 optimum
 black
+openai==1.12.0
