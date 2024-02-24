@@ -127,33 +127,31 @@ def __chat(
     return whole_utterance
 
 
-def __test(utterance: str):
-    import time
-
-    default_top_k = 25
-    default_top_p = 2
-    default_max_len = 512
-    default_temp = 0.7
-
-    print("Question:", utterance)
-    print(
-        "Reponse:",
-        think(
-            ThinkRequest(
-                utterance=utterance,
-                temperature=default_temp,
-                max_len=default_max_len,
-                top_k=default_top_k,
-                top_p=default_top_p,
-            )
-        ),
-    )
-    print("===============================")
-    time.sleep(5)
-
-
 if __name__ == "__main__":
-    print(__knowledge)
+    def __test(utterance: str):
+        import time
+
+        default_top_k = 25
+        default_top_p = 2
+        default_max_len = 512
+        default_temp = 0.7
+
+        print("Question:", utterance)
+        print(
+            "Reponse:",
+            think(
+                ThinkRequest(
+                    utterance=utterance,
+                    temperature=default_temp,
+                    max_len=default_max_len,
+                    top_k=default_top_k,
+                    top_p=default_top_p,
+                )
+            ),
+        )
+        print("===============================")
+        time.sleep(5)
+
     __test("Qui es tu ?")
     __test("Quelle année sommes nous ?")
     __test("Depuis quand le vaisseau est il arrété ?")
