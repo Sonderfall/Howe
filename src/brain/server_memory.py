@@ -40,7 +40,9 @@ __knowledge_s01e01_step_0 = f"""
         Le nom du vaisseau spatial est {__lore.ship_name} et son capitaine s'appelle {__lore.captain_name}.
         Et le capitaine {__lore.captain_name} aime {__lore.captain_hobby}.
         Le vaisseau spatial {__lore.ship_name} qui à pour objectif d'établir une colonie humaine sur une lointaine planète nommée {__lore.target_planet_name}.
+        """
 
+tmp = f"""
         Le vaisseau est parti en l'année {__lore.ship_launch_year} et nous sommes actuellement en {__lore.current_year}.
         Le voyage aurait du durer {__lore.estimated_travel_duration} années mais un accident est survenu en l'année {__lore.accident_year}.
         Depuis le vaisseau ne peut plus avancer. Le vaisseau semble bloqué par une anomalie spatiale.
@@ -64,7 +66,7 @@ __knowledge_s01e01_step_0 = f"""
         que le vaisseau reprenne sa route vers {__lore.target_planet_name}. Une fois libéré, le vaisseau reprendra automatiquement la route.
 
         A partir de maintenant, pour toute interaction, tu vas faire comme si c'était un membre d'équipage qui te parle.
-        """
+"""
 
 
 def get_knowledge() -> list:
