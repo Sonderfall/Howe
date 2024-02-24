@@ -57,7 +57,8 @@ def __config_from_file(config_filepath: str) -> __OpenAICOnfig:
 
 __client_config = __config_from_file("config/openai.json")
 __client = OpenAI(
-    api_key=__client_config.api_key, organization=__client_config.organization_id
+    api_key=__client_config.api_key,
+    organization=__client_config.organization_id
 )
 
 
@@ -82,12 +83,12 @@ def think(utterance: str, on_new_sentence: callable = None) -> str:
 
 
 if __name__ == "__main__":
-
     def __test(utterance: str):
         import time
 
         print("Question:", utterance)
-        print("Reponse:", think(utterance=utterance))
+        resp = think(utterance=utterance)
+        print("Reponse:", resp)
         print("===============================")
 
         time.sleep(2)
