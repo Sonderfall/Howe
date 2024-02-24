@@ -40,6 +40,8 @@ __knowledge_s01e01_step_0 = f"""
         Le nom du vaisseau spatial est {__lore.ship_name} et son capitaine s'appelle {__lore.captain_name}.
         Et le capitaine {__lore.captain_name} aime {__lore.captain_hobby}.
         Le vaisseau spatial {__lore.ship_name} qui à pour objectif d'établir une colonie humaine sur une lointaine planète nommée {__lore.target_planet_name}.
+
+        Ne répond JAMAIS par du code informatique, toujours en français en prose, comme si tu étais un assistant serviable.
         """
 
 tmp = f"""
