@@ -92,7 +92,7 @@ def __chat(
                 max_new_tokens=max_new_tokens,
                 min_new_tokens=min_new_tokens,
                 # pad_token_id=__tokenizer.eos_token_id,
-                max_time=15;
+                max_time=15,
                 **kwargs,
             ),
             streamer=__streamer,
