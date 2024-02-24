@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from dataclasses_json import dataclass_json
-from sqs import ThinkRequest
 from brain.server_memory import get_knowledge
 from openai import OpenAI
 
@@ -14,6 +13,7 @@ __history = [
 @dataclass
 class _OpenAICOnfig:
     api_key: str
+    organization_id: str
 
 
 def _config_from_file(config_filepath: str) -> _OpenAICOnfig:
@@ -23,56 +23,41 @@ def _config_from_file(config_filepath: str) -> _OpenAICOnfig:
     return config
 
 
-__client = OpenAI(api_key=_config_from_file("config/openai.json").api_key)
+__client_config = _config_from_file("config/openai.json")
+__client = OpenAI(
+    api_key=__client_config.api_key, organization=__client_config.organization_id
+)
 
 
-def think(request: ThinkRequest, on_new_sentence: callable = None) -> str:
-    response = __chat(query=request.utterance, on_new_sentence=on_new_sentence)
-
-    return response
-
-
-def __chat(query: str, **kwargs):
-    # global __history
-    # if __history is None:
-    #     __history = []
-
-    __history.append({"role": "user", "content": query})
+def think(utterance: str, on_new_sentence: callable = None) -> str:
+    __history.append({"role": "user", "content": utterance})
 
     response = __client.chat.completions.create(
         model="gpt-3.5-turbo-0125", messages=__history
     )
 
-    return response.choices[0].message
+    ret = response.choices[0].message
+    content = ret.content
 
+    __history.append({"role": "system", "content": content})
 
-def __test(utterance: str):
-    import time
+    if on_new_sentence is not None:
+        on_new_sentence(content)
 
-    default_top_k = 25
-    default_top_p = 2
-    default_max_len = 512
-    default_temp = 0.7
-
-    print("Question:", utterance)
-    print(
-        "Reponse:",
-        think(
-            ThinkRequest(
-                utterance=utterance,
-                temperature=default_temp,
-                max_len=default_max_len,
-                top_k=default_top_k,
-                top_p=default_top_p,
-            )
-        ),
-    )
-    print("===============================")
-    time.sleep(5)
+    return content
 
 
 if __name__ == "__main__":
-    # print(__knowledge)
+
+    def __test(utterance: str):
+        import time
+
+        print("Question:", utterance)
+        print("Reponse:", think(utterance=utterance))
+        print("===============================")
+
+        time.sleep(2)
+
     __test("Qui es tu ?")
     __test("Quelle année sommes nous ?")
     __test("Depuis quand le vaisseau est il arrété ?")

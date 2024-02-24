@@ -1,6 +1,6 @@
 from statemachine import StateMachine, State
 from sqs import respond, wait_request
-from brain.server_brain import think
+from brain.openai_server_brain import think
 
 
 class ServerBot(StateMachine):
@@ -19,7 +19,7 @@ class ServerBot(StateMachine):
 
     def on_enter_idle(self):
         print("I am waiting")
-        self.__last_heard_utterance = wait_request()
+        self.__last_heard_utterance = wait_request().utterance
         self.cycle()
 
     def on_exit_idle(self):
