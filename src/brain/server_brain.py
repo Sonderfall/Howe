@@ -16,7 +16,7 @@ from transformers import (
 # __REVISION = "main"
 # __REVISION = "gptq-8bit-32g-actorder_True" ## crash
 __MODEL_NAME = "bofenghuang/vigogne-2-13b-chat"
-__REVISION = "v2.0"
+__REVISION = None
 
 __model = AutoModelForCausalLM.from_pretrained(
     __MODEL_NAME, revision=__REVISION, device_map="cuda:0"
