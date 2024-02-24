@@ -149,6 +149,7 @@ def __test(utterance: str):
 
 
 if __name__ == "__main__":
+    print(__knowledge)
     __test("Qui es tu ?")
     __test("Quelle année sommes nous ?")
     __test("Depuis quand le vaisseau est il arrété ?")
