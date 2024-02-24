@@ -116,16 +116,17 @@ def __chat(
     return whole_utterance
 
 
-if __name__ == "__main__":
+def __test(utterance : str):
     default_top_k = 15
     default_top_p = 1
     default_max_len = 512
     default_temp = 1
 
-    print(
+    print("Question:", utterance)
+    print("Reponse:",
         think(
             ThinkRequest(
-                utterance="Qui es tu ?",
+                utterance=utterance,
                 temperature=default_temp,
                 max_len=default_max_len,
                 top_k=default_top_k,
@@ -134,74 +135,12 @@ if __name__ == "__main__":
         )
     )
 
-    print(
-        think(
-            ThinkRequest(
-                utterance="Quelle année sommes nous ?",
-                temperature=default_temp,
-                max_len=default_max_len,
-                top_k=default_top_k,
-                top_p=default_top_p,
-            )
-        )
-    )
 
-    print(
-        think(
-            ThinkRequest(
-                utterance="Depuis quand le vaisseau est il arrété ?",
-                temperature=default_temp,
-                max_len=default_max_len,
-                top_k=default_top_k,
-                top_p=default_top_p,
-            )
-        )
-    )
-
-    print(
-        think(
-            ThinkRequest(
-                utterance="Où es le capitaine ?",
-                temperature=default_temp,
-                max_len=default_max_len,
-                top_k=default_top_k,
-                top_p=default_top_p,
-            )
-        )
-    )
-
-    print(
-        think(
-            ThinkRequest(
-                utterance="Pourquoi le vaisseau s'est arrété ?",
-                temperature=default_temp,
-                max_len=default_max_len,
-                top_k=default_top_k,
-                top_p=default_top_p,
-            )
-        )
-    )
-
-    print(
-        think(
-            ThinkRequest(
-                utterance="Que peux tu me dire sur le vaisseau ?",
-                temperature=default_temp,
-                max_len=default_max_len,
-                top_k=default_top_k,
-                top_p=default_top_p,
-            )
-        )
-    )
-
-    print(
-        think(
-            ThinkRequest(
-                utterance="Que doit on faire pour que le vaisseau redémarre ?",
-                temperature=default_temp,
-                max_len=default_max_len,
-                top_k=default_top_k,
-                top_p=default_top_p,
-            )
-        )
-    )
+if __name__ == "__main__":
+    __test("Qui es tu ?")
+    __test("Quelle année sommes nous ?")
+    __test("Depuis quand le vaisseau est il arrété ?")
+    __test("Où es le capitaine ?")
+    __test("Pourquoi le vaisseau s'est arrété ?")
+    __test("Que peux tu me dire sur le vaisseau ?")
+    __test("Que doit on faire pour que le vaisseau redémarre ?")
