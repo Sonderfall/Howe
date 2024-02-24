@@ -4,7 +4,10 @@ from pygame import mixer
 from google.cloud import texttospeech
 from google.oauth2 import service_account
 
-__VOICE_GOOGLE_1 = "fr-FR-Wavenet-B"
+__VOICE_GOOGLE_1 = {
+    "name": "fr-FR-Wavenet-B",
+    "gender": texttospeech.SsmlVoiceGender.MALE,
+}
 
 
 def say(utterance: str):
@@ -13,12 +16,12 @@ def say(utterance: str):
 
     filepath = "output.mp3"
 
-    __synthesize(utterance, filepath)
+    __synthesize(utterance, __VOICE_GOOGLE_1, filepath)
 
     __play(filepath)
 
 
-def __synthesize(utterance: str, output: str):
+def __synthesize(utterance: str, voice: dict, output: str):
     # Create credentials
     credentials = service_account.Credentials.from_service_account_file(
         "config/gcloud.json"
@@ -34,8 +37,8 @@ def __synthesize(utterance: str, output: str):
     # voice gender ("neutral")
     voice = texttospeech.VoiceSelectionParams(
         language_code="fr-FR",
-        ssml_gender=texttospeech.SsmlVoiceGender.MALE,
-        name=__VOICE_GOOGLE_1,
+        ssml_gender=voice["gender"],
+        name=voice["name"],
     )
 
     # Select the type of audio file you want returned
