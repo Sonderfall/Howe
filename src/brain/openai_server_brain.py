@@ -41,9 +41,6 @@ def think(utterance: str, on_new_sentence: callable = None) -> str:
 
     __history.append({"role": "system", "content": content})
 
-    if on_new_sentence is not None:
-        on_new_sentence(content)
-
     return content
 
 

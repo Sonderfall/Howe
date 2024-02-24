@@ -1,5 +1,5 @@
 from statemachine import StateMachine, State
-from sqs import respond, wait_request
+from sqs import respond, wait_request, ThinkResponse
 from brain.openai_server_brain import think
 
 
@@ -28,12 +28,9 @@ class ServerBot(StateMachine):
     def on_enter_responding(self):
         print("I am responding about", self.__last_heard_utterance)
 
-        def __on_new_sentence(response):
-            print(response)
-            respond(response)
-
         if self.__last_heard_utterance is not None:
-            think(self.__last_heard_utterance, on_new_sentence=__on_new_sentence)
+            response = think(self.__last_heard_utterance)
+            respond(ThinkResponse(utterance=response, end=True))
 
         self.cycle()
 
