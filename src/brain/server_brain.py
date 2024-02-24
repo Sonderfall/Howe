@@ -99,7 +99,8 @@ def __chat(
             return_dict_in_generate=True,
         )
 
-    Thread(target=__generate).start()
+    thread = Thread(target=__generate)
+    thread.start()
 
     whole_utterance = ""
     current_sentence = ""
@@ -124,6 +125,8 @@ def __chat(
         on_new_sentence(ThinkResponse(utterance="", end=True))
 
     __history.append({"role": "assistant", "content": whole_utterance})
+
+    thread.join()
 
     return whole_utterance
 
