@@ -42,6 +42,7 @@ __knowledge_s01e01_step_0 = f"""
         Le vaisseau spatial {__lore.ship_name} qui à pour objectif d'établir une colonie humaine sur une lointaine planète nommée {__lore.target_planet_name}.
 
         Ne répond JAMAIS par du code informatique, toujours en français en prose, comme si tu étais un assistant serviable.
+        N'invente RIEN, répond simplement ce que tu sais. Et si tu ne sais pas, dis que tu ne sais pas.
         """
 
 tmp = f"""
