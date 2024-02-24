@@ -18,7 +18,7 @@ from transformers import (
 # __MODEL_NAME = "bofenghuang/vigogne-2-7b-chat"
 # __REVISION = "v2"
 __MODEL_NAME = "bofenghuang/vigogne-2-13b-chat"
-__REVISION = None
+__REVISION = "main"
 
 __model = AutoModelForCausalLM.from_pretrained(
     __MODEL_NAME,
@@ -91,7 +91,8 @@ def __chat(
                 repetition_penalty=repetition_penalty,
                 max_new_tokens=max_new_tokens,
                 min_new_tokens=min_new_tokens,
-                pad_token_id=__tokenizer.eos_token_id,
+                # pad_token_id=__tokenizer.eos_token_id,
+                max_time=15;
                 **kwargs,
             ),
             streamer=__streamer,
@@ -128,10 +129,10 @@ def __chat(
 
 
 def __test(utterance: str):
-    default_top_k = 15
-    default_top_p = 1
+    default_top_k = 25
+    default_top_p = 2
     default_max_len = 512
-    default_temp = 1
+    default_temp = 0.7
 
     print("Question:", utterance)
     print(
