@@ -1,7 +1,7 @@
 from sqs import request, wait_response, ThinkRequest
 
 
-def think(utterance: str, on_new_sentence: callable) -> str:
+def think(utterance: str, on_new_sentence: callable = None) -> str:
     request(
         ThinkRequest(
             utterance=utterance,
@@ -22,7 +22,8 @@ def think(utterance: str, on_new_sentence: callable) -> str:
             if response.end:
                 should_continue = False
             else:
-                on_new_sentence(response.utterance)
+                if on_new_sentence is not None:
+                    on_new_sentence(response.utterance)
                 whole_utterance += response.utterance + " "
 
     return whole_utterance

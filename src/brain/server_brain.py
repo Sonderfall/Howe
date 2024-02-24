@@ -15,7 +15,7 @@ from transformers import (
 # https://github.com/bofenghuang/vigogne
 # __REVISION = "main"
 # __REVISION = "gptq-8bit-32g-actorder_True" ## crash
-__MODEL_NAME = "bofenghuang/vigogne-2-7b-chat"
+__MODEL_NAME = "bofenghuang/vigogne-2-13b-chat"
 __REVISION = "v2.0"
 
 __model = AutoModelForCausalLM.from_pretrained(
@@ -39,7 +39,7 @@ def think(request: ThinkRequest, on_new_sentence: callable = None) -> str:
         on_new_sentence=on_new_sentence,
         top_k=request.top_k,
         top_p=request.top_p,
-        use_cache=False,
+        use_cache=True,
     )
 
     # print(response)
