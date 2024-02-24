@@ -3,6 +3,7 @@ models/
 input.mp3
 output.mp3
 serverless/
+tmp/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

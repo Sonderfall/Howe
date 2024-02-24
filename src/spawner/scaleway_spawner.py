@@ -12,7 +12,7 @@ from spawner.docker_client import (
     DockerImageConfig,
 )
 
-__SAVE_FILE = "config/instance.json"
+__SAVE_FILE = "tmp/instance.json"
 
 # __instance_config = ScalewayInstanceConfig(
 #     type="RENDER-S",
@@ -47,6 +47,11 @@ class __SavedState:
 
 
 def __save(state: __SavedState):
+    dir = os.path.dirname(__SAVE_FILE)
+
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+
     with open(__SAVE_FILE, "w") as out:
         out.write(state.to_json())
 

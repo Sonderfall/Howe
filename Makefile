@@ -36,3 +36,7 @@ spawn-server:
 .PHONY: kill-server
 kill-server:
 	python3 src/main.py kill
+
+.PHONY: clear
+clear:
+	rm -rf tmp/

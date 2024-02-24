@@ -97,8 +97,7 @@ def __chat(
             return_dict_in_generate=True,
         )
 
-    thread = Thread(target=__generate)
-    thread.start()
+    Thread(target=__generate).start()
 
     whole_utterance = ""
     current_sentence = ""
