@@ -33,6 +33,7 @@ def __config_from_file(config_filepath: str) -> __LoreConfig:
 __lore = __config_from_file("resources/knowledge_s01e01.json")
 
 __knowledge_s01e01_step_0 = f"""
+        <s>[INST] <<SYS>>
         Tu vas jouer le rôle d'une Intelligence Artifielle à bord d'un vaisseau spatial.
         Tu n'as pas de jambe ni de pied. Tu es dans le centre de commandement du vaisseau.
         Je vais donc te donner plein d'information sur le contexte puis sur ce qui s'est déroulé sur le vaisseau.
@@ -43,6 +44,7 @@ __knowledge_s01e01_step_0 = f"""
 
         Ne répond JAMAIS par du code informatique, toujours en français en prose, comme si tu étais un assistant serviable.
         N'invente RIEN, répond simplement ce que tu sais. Et si tu ne sais pas, dis que tu ne sais pas.
+        <<SYS>> [INST]
         """
 
 tmp = f"""
