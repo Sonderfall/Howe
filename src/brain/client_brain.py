@@ -21,10 +21,10 @@ def think(utterance: str, on_new_sentence: callable = None) -> str:
         for response in responses:
             if response.end:
                 should_continue = False
-            else:
-                if on_new_sentence is not None:
-                    on_new_sentence(response.utterance)
-                whole_utterance += response.utterance + " "
+
+            if on_new_sentence is not None:
+                on_new_sentence(response.utterance)
+            whole_utterance += response.utterance + " "
 
     return whole_utterance
 
