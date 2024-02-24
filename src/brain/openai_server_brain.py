@@ -40,6 +40,7 @@ def think(utterance: str, on_new_sentence: callable = None) -> str:
     content = ret.content
 
     __history.append({"role": "system", "content": content})
+    content = content.replace(",", "")
 
     return content
 
