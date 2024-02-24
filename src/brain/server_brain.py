@@ -15,14 +15,22 @@ from transformers import (
 # https://github.com/bofenghuang/vigogne
 # __REVISION = "main"
 # __REVISION = "gptq-8bit-32g-actorder_True" ## crash
+# __MODEL_NAME = "bofenghuang/vigogne-2-7b-chat"
+# __REVISION = "v2"
 __MODEL_NAME = "bofenghuang/vigogne-2-13b-chat"
 __REVISION = None
 
 __model = AutoModelForCausalLM.from_pretrained(
-    __MODEL_NAME, revision=__REVISION, device_map="cuda:0"
+    __MODEL_NAME,
+    revision=__REVISION,
+    device_map="cuda:0",
+    trust_remote_code=True,
 )
 __tokenizer = AutoTokenizer.from_pretrained(
-    __MODEL_NAME, revision=__REVISION, use_fast=True
+    __MODEL_NAME,
+    revision=__REVISION,
+    use_fast=True,
+    trust_remote_code=True,
 )
 __streamer = TextIteratorStreamer(
     __tokenizer, timeout=10.0, skip_prompt=True, skip_special_tokens=True
@@ -36,6 +44,7 @@ def think(request: ThinkRequest, on_new_sentence: callable = None) -> str:
         query=request.utterance,
         temperature=request.temperature,
         max_new_tokens=request.max_len,
+        min_new_tokens=20,
         on_new_sentence=on_new_sentence,
         top_k=request.top_k,
         top_p=request.top_p,
@@ -55,6 +64,7 @@ def __chat(
     top_k: float = 0,
     repetition_penalty: float = 1.1,
     max_new_tokens: int = 256,
+    min_new_tokens: int = 20,
     **kwargs,
 ):
     global __history
@@ -80,6 +90,7 @@ def __chat(
                 top_k=top_k,
                 repetition_penalty=repetition_penalty,
                 max_new_tokens=max_new_tokens,
+                min_new_tokens=min_new_tokens,
                 pad_token_id=__tokenizer.eos_token_id,
                 **kwargs,
             ),
@@ -116,14 +127,15 @@ def __chat(
     return whole_utterance
 
 
-def __test(utterance : str):
+def __test(utterance: str):
     default_top_k = 15
     default_top_p = 1
     default_max_len = 512
     default_temp = 1
 
     print("Question:", utterance)
-    print("Reponse:",
+    print(
+        "Reponse:",
         think(
             ThinkRequest(
                 utterance=utterance,
@@ -132,7 +144,7 @@ def __test(utterance : str):
                 top_k=default_top_k,
                 top_p=default_top_p,
             )
-        )
+        ),
     )
 
 
