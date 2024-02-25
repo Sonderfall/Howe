@@ -88,9 +88,52 @@ __knowledge_s01e01_step_0 = f"""
         Si je te parle c'est que je suis un membre d'équipage.
         """
 
+__knowledge_s01e01_step_scan_done = f"""
+        Grâce aux réparations faites par les membres d'équipage, voici les résultats du scanner:
+        Ce système contient Une etoile et 3 planètes ainsi que leurs lunes.
 
-def get_knowledge(step: int = 0) -> list:
-    return __knowledge_s01e01_step_0
+        Étoile centrale (nom : Helios) :
+        - Type : Géante rouge
+        - Composition : Principalement de l'hydrogène et de l'hélium, avec des traces d'autres éléments.
+        - Caractéristiques : Helios est une étoile vieillissante, en fin de vie.
+        Elle a un rayonnement plus faible que le Soleil et a déjà consommé son stock principal d'hydrogène.
+
+        Planète 1 (nom : Zama):
+        - Type : Planète tellurique
+        - Composition : Rocheuse, avec un noyau métallique.
+        - Caractéristiques : Zama est la planète la plus proche de Helios. Elle est aride et désertique,
+        avec une atmosphère mince composée principalement de dioxyde de carbone. Très toxique.
+
+        Planète 2 (nom : Tyrion 1):
+        - Type : Planète gazeuse
+        - Composition : Principalement d'hydrogène et d'hélium, avec des couches atmosphériques de gaz divers..
+        - Caractéristiques : géante gazeuse avec des vents violents et des tempêtes massives.
+        Elle possède 2 lune.
+
+        Lune (nom : Tyrion 2):
+        - Type : tellurique
+        - Composition : Rocheuse avec une atmosphère dense
+        - Caractéristiques : vie détectée sur cette planète, sa riche flore a généré d'immense quantité d'hydrocarbure.
+        Présent en surface comme en sous sol.
+
+        Lune (nom : Tyrion 3):
+        - Type : tellurique
+        - Composition : Rocheuse
+        - Caractéristiques : Aucune vie technonique ou biologique.
+
+        Planète 3 (nom : Pyra) :
+        - Type : Planète rocheuse
+        - Composition : Rocheuse avec une atmosphère dense de dioxyde de carbone et de vapeur d'eau.
+        - Caractéristiques : Pyra est une planète volcanique avec une activité géothermique intense. Ses paysages sont dominés par des volcans en éruption et des plaines de lave.
+        """
+
+
+def get_knowledge(step: int = 0) -> str:
+    if step == 0:
+        return __knowledge_s01e01_step_0
+    elif step == 1:
+        return __knowledge_s01e01_step_scan_done
+    return ""
 
 
 if __name__ == "__main__":

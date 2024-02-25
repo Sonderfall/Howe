@@ -1,4 +1,5 @@
 import os
+import hashlib
 
 from dataclasses import dataclass
 from dataclasses_json import dataclass_json
@@ -18,8 +19,14 @@ class __OpenAIConfig:
 @dataclass_json
 @dataclass
 class __SavedState:
-    step: str
+    step: int
     history: list
+    hash: str
+
+    @property
+    def compute_hash(self) -> str:
+        s = f"{self.history}+{self.step}"
+        return hashlib.sha256(s.encode()).hexdigest()
 
 
 def __save(state: __SavedState):
@@ -28,20 +35,28 @@ def __save(state: __SavedState):
     if not os.path.exists(dir):
         os.makedirs(dir)
 
+    state.hash = state.compute_hash
+
     with open(__SAVE_FILE, "w") as out:
         out.write(state.to_json())
 
 
 def __load() -> __SavedState:
-    if not os.path.exists(__SAVE_FILE):
-        step_state = 0
-        return __SavedState(
-            history=[{"role": "system", "content": get_knowledge(step_state)}],
-            step=step_state,
-        )
+    state = None
 
-    with open(__SAVE_FILE, "r") as f:
-        state = __SavedState.from_json(f.read())
+    if not os.path.exists(__SAVE_FILE):
+        state = __SavedState(
+            step=0, history=[{"role": "system", "content": get_knowledge(0)}], hash=None
+        )
+    else:
+        with open(__SAVE_FILE, "r") as f:
+            state = __SavedState.from_json(f.read())
+
+    if state.hash is not None and state.compute_hash != state.hash:
+        print("New computed hash, updateing knowledge...")
+
+        for i in range(1, state.step + 1):
+            state.history.append({"role": "system", "content": get_knowledge(i)})
 
     return state
 
@@ -91,11 +106,15 @@ if __name__ == "__main__":
 
         time.sleep(2)
 
-    __test("Qui es tu ?")
-    __test("Que sais tu de la compagnie ?")
-    __test("Quelle année sommes nous ?")
-    __test("Depuis quand le vaisseau est il arrété ?")
+    __test("Quels sont les résultats du scan ?")
+    # __test("Qui es tu ?")
+    # __test("Que sais tu de la compagnie ?")
+    # __test("Quelle année sommes nous ?")
+    __test(
+        "On cherche des hydrocarbures, de type alcyne, sur quelle planète pourrait on en trouver ?"
+    )
+    # __test("Depuis quand le vaisseau est il arrété ?")
     __test("Où es le capitaine ?")
     __test("Pourquoi le vaisseau s'est arrété ?")
-    __test("Que peux tu me dire sur le vaisseau ?")
+    # __test("Que peux tu me dire sur le vaisseau ?")
     __test("Que doit on faire pour que le vaisseau redémarre ?")

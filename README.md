@@ -2,7 +2,8 @@
 
 ## Setup
 
-- Config
+- Credentials
+
 - Install
 
 ## Usage
