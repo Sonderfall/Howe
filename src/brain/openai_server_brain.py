@@ -55,8 +55,10 @@ def __load() -> __SavedState:
     if state.hash is not None and state.compute_hash != state.hash:
         print("New computed hash, updateing knowledge...")
 
-        for i in range(1, state.step + 1):
-            state.history.append({"role": "system", "content": get_knowledge(i)})
+        if state.step > 0:
+            state.history.append(
+                {"role": "system", "content": get_knowledge(state.step)}
+            )
 
     return state
 

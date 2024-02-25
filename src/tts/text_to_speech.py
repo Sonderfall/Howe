@@ -4,6 +4,8 @@ from pygame import mixer
 from google.cloud import texttospeech
 from google.oauth2 import service_account
 
+# Available voices
+# https://cloud.google.com/text-to-speech/docs/voices?hl=fr
 __VOICE_GOOGLE_1 = {
     "name": "fr-FR-Wavenet-B",
     "gender": texttospeech.SsmlVoiceGender.MALE,

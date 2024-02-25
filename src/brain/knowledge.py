@@ -71,6 +71,7 @@ __knowledge_s01e01_step_0 = f"""
         Un feu s'est déclenché il y a quelques jours dans le laboratoire du vaisseau, le système d'extinction automatique s'est mis en marche. Le problème est réglé.
         Seul le capitaine {__lore.captain_name}, le capitaine en second {__lore.second_captain_name} ou bien l'arrivée à destination à {__lore.target_planet_name} peuvent réveiller les passagers.
         Tes capteurs signalent de l'activité dans le hangar du vaisseau.
+        Les réserves ont été altérées dans l'habitacle C6, et tu y détectes un dysfonctionnement.
         Tu détectes que {__lore.empty_cryo_count} cuves de cryo-simulation sont ouvertes. Et que {__lore.missing_cryo_count} cuves sont débranchées.
 
         Ce n'est pas normal que des gens soient réveillés, ils devraient être en cryo-simulation. Mais ce n'est pas grave, il y a une urgence.
@@ -101,30 +102,31 @@ __knowledge_s01e01_step_scan_done = f"""
         Planète 1 (nom : Zama):
         - Type : Planète tellurique
         - Composition : Rocheuse, avec un noyau métallique.
-        - Caractéristiques : Zama est la planète la plus proche de Helios. Elle est aride et désertique,
-        avec une atmosphère mince composée principalement de dioxyde de carbone. Très toxique.
+        - Caractéristiques : Zama est la planète la plus proche du {__lore.ship_name}. Elle semble aride et désertique,
+        avec une très fine atmosphère. Beaucoup de bruit concernant cette planète, c'est étrange étant donnée sa proximité.
+        Elle est possiblement entourée d'une ceinture d'astéroïdes.
 
-        Planète 2 (nom : Tyrion 1):
+        Planète 2 (nom : Tirion 1):
         - Type : Planète gazeuse
         - Composition : Principalement d'hydrogène et d'hélium, avec des couches atmosphériques de gaz divers..
         - Caractéristiques : géante gazeuse avec des vents violents et des tempêtes massives.
         Elle possède 2 lune.
 
-        Lune (nom : Tyrion 2):
+        Lune (nom : Tirion 2):
         - Type : tellurique
         - Composition : Rocheuse avec une atmosphère dense
         - Caractéristiques : vie détectée sur cette planète, sa riche flore a généré d'immense quantité d'hydrocarbure.
         Présent en surface comme en sous sol.
 
-        Lune (nom : Tyrion 3):
+        Lune (nom : Tirion 3):
         - Type : tellurique
         - Composition : Rocheuse
-        - Caractéristiques : Aucune vie technonique ou biologique.
+        - Caractéristiques : Aucune activité tectonique ou biologique.
 
         Planète 3 (nom : Pyra) :
         - Type : Planète rocheuse
         - Composition : Rocheuse avec une atmosphère dense de dioxyde de carbone et de vapeur d'eau.
-        - Caractéristiques : Pyra est une planète volcanique avec une activité géothermique intense. Ses paysages sont dominés par des volcans en éruption et des plaines de lave.
+        - Caractéristiques : Pyra est une planète volcanique avec une activité géothermique intense. On y trouve une grande quantité de fer et de métaux lourds.
         """
 
 
