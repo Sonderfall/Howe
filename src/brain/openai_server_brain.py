@@ -2,7 +2,7 @@ import os
 
 from dataclasses import dataclass
 from dataclasses_json import dataclass_json
-from brain.server_memory import get_knowledge
+from brain.knowledge import get_knowledge
 from openai import OpenAI
 
 __SAVE_FILE = "tmp/history.json"
@@ -18,8 +18,8 @@ class __OpenAIConfig:
 @dataclass_json
 @dataclass
 class __SavedState:
-    history: list
     step: str
+    history: list
 
 
 def __save(state: __SavedState):
@@ -92,6 +92,7 @@ if __name__ == "__main__":
         time.sleep(2)
 
     __test("Qui es tu ?")
+    __test("Que sais tu de la compagnie ?")
     __test("Quelle année sommes nous ?")
     __test("Depuis quand le vaisseau est il arrété ?")
     __test("Où es le capitaine ?")
