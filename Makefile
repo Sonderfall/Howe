@@ -6,6 +6,10 @@ client:
 server:
 	python3 src/main.py run --mode=server
 
+.PHONY: player
+player:
+	python3 src/player/server.py --directory resources
+
 .PHONY: build-server
 build-server:
 	docker build -f docker/server.Dockerfile --tag sonderfall/howe:latest .
