@@ -21,18 +21,18 @@
   <script>
     let audio = document.querySelector("audio");
     let canvas = document.querySelector("canvas");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth * 0.98;
+    canvas.height = window.innerHeight * 0.97;
     audio.load();
     audio.play();
 
     let wave = new Wave(audio, canvas);
     wave.addAnimation(
       new wave.animations.Arcs({
-        lineWidth: 4,
+        lineWidth: 8,
         lineColor: { gradient: ["#21D4FD", "#B721FF"] },
         diameter: 500,
-        fillColor: { gradient: ["#21D4FD", "#21D4FD", "#B721FF"], rotate: 45 },
+        fillColor: { gradient: ["#21D4FD", "#21D4FD", "#B721FF"], rotate: 100 },
       })
     );
   </script>

@@ -1,5 +1,6 @@
 import os
 import hashlib
+import time
 
 from dataclasses import dataclass
 from dataclasses_json import dataclass_json
@@ -81,13 +82,18 @@ def think(utterance: str, on_new_sentence: callable = None) -> str:
 
     state.history.append({"role": "user", "content": utterance})
 
-    response = __client.chat.completions.create(
-        model="gpt-3.5-turbo-0125", messages=state.history
-    )
+    def __call_api():
+        try:
+            response = __client.chat.completions.create(
+                model="gpt-3.5-turbo-0125", messages=state.history
+            )
+            return response.choices[0].message.content
+        except Exception as e:
+            print("Error with OpenAI", str(e))
+            time.sleep(3)
+            return __call_api()
 
-    ret = response.choices[0].message
-    content = ret.content
-
+    content = __call_api()
     state.history.append({"role": "system", "content": content})
     content = content.replace(",", "")
 
@@ -99,8 +105,6 @@ def think(utterance: str, on_new_sentence: callable = None) -> str:
 if __name__ == "__main__":
 
     def __test(utterance: str):
-        import time
-
         print("Question:", utterance)
         resp = think(utterance=utterance)
         print("Reponse:", resp)
