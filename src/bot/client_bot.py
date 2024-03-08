@@ -1,6 +1,8 @@
+import time
+
 from tts import say
 from stt import listen
-from player import play
+from player import play_continue
 from brain.client_brain import think
 from statemachine import StateMachine, State
 from pynput.keyboard import Key, Listener
@@ -49,7 +51,7 @@ class ClientBot(StateMachine):
         Listener(on_press=__on_press, on_release=__on_release).start()
 
         while True:
-            pass
+            time.sleep(10)
 
     def on_enter_idle(self):
         print("I am waiting")
@@ -61,7 +63,7 @@ class ClientBot(StateMachine):
         print("I am listening")
 
         def __play_sound():
-            play("resources/button.mp3")
+            play_continue("resources/button.mp3")
 
         def __should_listen() -> bool:
             return self.__must_listen
@@ -83,14 +85,14 @@ class ClientBot(StateMachine):
             self.__must_play = False
             print("New sentence:", utterance)
             if utterance is not None:
-                say(utterance)
+                say(utterance, "display")
 
         def __should_play() -> bool:
             return self.__must_play
 
         def __play_sound():
             self.__must_play = True
-            play("resources/bot.mp3", __should_play, loop=True)
+            play_continue("resources/bot.mp3", __should_play, loop=True)
 
         if self.__last_heard_utterance is not None:
             Thread(target=__play_sound).start()

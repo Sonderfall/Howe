@@ -1,8 +1,7 @@
-import time
-
-from pygame import mixer
 from google.cloud import texttospeech
 from google.oauth2 import service_account
+
+from player import play_in_browser, play
 
 # Available voices
 # https://cloud.google.com/text-to-speech/docs/voices?hl=fr
@@ -12,7 +11,7 @@ __VOICE_GOOGLE_1 = {
 }
 
 
-def say(utterance: str):
+def say(utterance: str, mode: str = "sound_only"):
     if utterance is None:
         return
 
@@ -20,7 +19,10 @@ def say(utterance: str):
 
     __synthesize(utterance, __VOICE_GOOGLE_1, filepath)
 
-    __play(filepath)
+    if mode == "display":
+        play_in_browser()
+    elif mode == "sound_only":
+        play(filepath)
 
 
 def __synthesize(utterance: str, voice: dict, output: str):
@@ -58,15 +60,6 @@ def __synthesize(utterance: str, voice: dict, output: str):
     with open(output, "wb") as out:
         # Write the response to the output file.
         out.write(response.audio_content)
-
-
-def __play(filepath: str):
-    mixer.init()
-    mixer.music.load(filepath)
-    mixer.music.play()
-
-    while mixer.music.get_busy():  # wait for music to finish playing
-        time.sleep(0.5)
 
 
 if __name__ == "__main__":

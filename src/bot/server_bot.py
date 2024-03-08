@@ -1,3 +1,5 @@
+import time
+
 from statemachine import StateMachine, State
 from sqs import respond, wait_request, ThinkResponse
 from brain.openai_server_brain import think
@@ -15,7 +17,7 @@ class ServerBot(StateMachine):
 
     def live(self):
         while True:
-            pass
+            time.sleep(10)
 
     def on_enter_idle(self):
         print("I am waiting")

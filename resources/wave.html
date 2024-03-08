@@ -14,8 +14,8 @@
   </head>
   <body>
     <canvas></canvas>
-    <audio crossorigin="anonymous" autoplay>
-      <source src="http://localhost:8000/bot.mp3" type="audio/mpeg"/>
+    <audio crossorigin="anonymous">
+      <source src="http://localhost:8000/output.mp3" type="audio/mpeg"/>
     </audio>
   </body>
   <script>
@@ -23,6 +23,8 @@
     let canvas = document.querySelector("canvas");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    audio.load();
+    audio.play();
 
     let wave = new Wave(audio, canvas);
     wave.addAnimation(

@@ -8,7 +8,7 @@ server:
 
 .PHONY: player
 player:
-	python3 src/player/server.py --directory resources
+	python3 src/player/browser.py --directory ./
 
 .PHONY: build-server
 build-server:

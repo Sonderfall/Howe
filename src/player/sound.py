@@ -4,7 +4,16 @@ import os
 from pygame import mixer
 
 
-def play(filepath: str, should_continue: callable = None, loop: bool = False):
+def play(filepath: str):
+    mixer.init()
+    mixer.music.load(filepath)
+    mixer.music.play()
+
+    while mixer.music.get_busy():  # wait for music to finish playing
+        time.sleep(0.5)
+
+
+def play_continue(filepath: str, should_continue: callable = None, loop: bool = False):
     if filepath is None or not os.path.exists(filepath):
         return
 
