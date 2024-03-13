@@ -54,7 +54,7 @@ def __load() -> __SavedState:
             state = __SavedState.from_json(f.read())
 
     if state.hash is not None and state.compute_hash != state.hash:
-        print("New computed hash, updateing knowledge...")
+        print("New computed hash, updating knowledge...")
 
         if state.step > 0:
             state.history.append(
@@ -103,7 +103,6 @@ def think(utterance: str, on_new_sentence: callable = None) -> str:
 
 
 if __name__ == "__main__":
-
     def __test(utterance: str):
         print("Question:", utterance)
         resp = think(utterance=utterance)
