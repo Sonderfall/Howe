@@ -2,6 +2,7 @@
     "company_name": "La Compagnie",
     "ship_name":"Mehara",
     "shuttle_name": "Bachibouzouk",
+    "second_shuttle_name": "Janissaire",
     "target_planet_name":"Veld",
     "ship_launch_year":"2140",
     "accident_year":"2290",
@@ -16,14 +17,24 @@
     "captain_name":"Suzuki",
     "captain_hobby":"jouer de la trompette",
     "second_captain_name": "Roland",
-    "crew_count": "3",
-    "crew_1_name":"John",
-    "crew_1_job":"ingénieur",
-    "crew_2_name":"John",
-    "crew_2_job":"ingénieur",
-    "crew_3_name":"John",
-    "crew_3_job":"ingénieur",
+    "players": [
+            "Zoé",
+            "Olivier",
+            "Valentin",
+            "Jérome"
+    ],
+    "crew_awake": [
+        "Johana Johnson",
+        "Raymond Roland",
+        "Sato Suzuki",
+        "Marc Maze",
+        "Dorothée Dauphiné",
+        "Luc Lebrun",
+        "Charles Camou",
+        "Viktor van Vor"
+    ],
     "ai_name": "Madame Jean-René",
-    "empty_cryo_count": "9",
-    "missing_cryo_count": "74"
+    "empty_cryo_count": "12",
+    "missing_cryo_count": "74",
+    "antenna_count": "4"
 }
