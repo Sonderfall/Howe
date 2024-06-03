@@ -29,12 +29,10 @@
         "Sato Suzuki",
         "Marc Maze",
         "Dorothée Dauphiné",
-        "Luc Lebrun",
-        "Charles Camou",
-        "Viktor van Vor"
+        "Luc Lebrun"
     ],
     "ai_name": "Madame Jean-René",
     "empty_cryo_count": "12",
     "missing_cryo_count": "74",
-    "antenna_count": "4"
+    "antenna_count": "3"
 }

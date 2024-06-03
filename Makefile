@@ -9,6 +9,7 @@ server:
 .PHONY: player
 player:
 	google-chrome resources/wave.html
+# firefox resources/wave.html
 	python3 src/player/browser.py --directory ./
 
 .PHONY: build-server
